@@ -21,6 +21,7 @@
 	// "remoteUser": "root"
 
 	"mounts": [
-		"source=/home/pablo/win/source/repos/Pruebas.Blazor.Covid,target=/mnt/fuentes,type=bind,consistency=cached"
+		"source=/home/pablo/win/source/repos/IntelliAI,target=/mnt/fuentes,type=bind,consistency=cached",
+		"source=/home/pablo/win/source/repos/IntelliAI,target=/mnt/intelliAI,type=bind,consistency=cached"
 	]
 }
