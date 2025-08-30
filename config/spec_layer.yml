@@ -1,0 +1,130 @@
+# Configuración del Spec Layer - Sistema de Contratos Inteligentes
+
+# Umbrales de riesgo para diferentes niveles
+risk_thresholds:
+  low: 0.3
+  medium: 0.6
+  high: 0.8
+  critical: 0.9
+
+# Configuración de contratos
+contract_expiry_hours: 24
+max_context_chunks: 5
+min_source_coverage: 0.7
+auto_approval_threshold: 0.8
+
+# Rutas críticas que requieren aprobación humana
+critical_paths:
+  - "/auth/"
+  - "/payments/"
+  - "/migrations/"
+  - "/infra/"
+  - "/config/"
+  - "/security/"
+
+# Palabras clave de alto riesgo
+high_risk_keywords:
+  - "delete"
+  - "remove"
+  - "drop"
+  - "migrate"
+  - "deploy"
+  - "production"
+  - "database"
+  - "password"
+  - "token"
+  - "secret"
+
+# Palabras clave de riesgo medio
+medium_risk_keywords:
+  - "update"
+  - "modify"
+  - "change"
+  - "refactor"
+  - "optimize"
+  - "restructure"
+
+# Configuración de detección de tipos de tarea
+task_type_detection:
+  procedural_keywords:
+    - "cómo"
+    - "how"
+    - "pasos"
+    - "steps"
+    - "proceso"
+    - "process"
+    - "workflow"
+  
+  diagnostic_keywords:
+    - "error"
+    - "problema"
+    - "issue"
+    - "bug"
+    - "diagnosticar"
+    - "diagnose"
+    - "troubleshoot"
+  
+  decision_keywords:
+    - "decidir"
+    - "decide"
+    - "opción"
+    - "option"
+    - "recomendar"
+    - "recommend"
+    - "choose"
+  
+  code_keywords:
+    - "código"
+    - "code"
+    - "implementar"
+    - "implement"
+    - "función"
+    - "function"
+    - "class"
+    - "method"
+
+# Configuración de validación
+validation:
+  min_compliance_score: 0.8
+  min_context_relevance: 0.7
+  min_source_coverage: 0.7
+  max_violations_allowed: 2
+
+# Configuración de logging
+logging:
+  level: "INFO"
+  log_contracts: true
+  log_validations: true
+  log_violations: true
+
+# Configuración de integración con GitHub
+github_integration:
+  enabled: true
+  index_prs: true
+  index_issues: true
+  include_comments: true
+  include_reviews: true
+
+# Configuración de human-in-the-loop
+human_loop:
+  enabled: true
+  auto_approval_for_low_risk: true
+  notification_channels:
+    - "slack"
+    - "github"
+    - "email"
+  approval_timeout_hours: 24
+  escalation_threshold_minutes: 60
+
+# Configuración de métricas
+metrics:
+  track_contract_generation: true
+  track_validation_scores: true
+  track_human_approvals: true
+  export_to_dashboard: true
+
+# Configuración de desarrollo
+development:
+  debug_mode: false
+  mock_human_approval: false
+  test_mode: false

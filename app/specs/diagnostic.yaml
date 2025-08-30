@@ -1,0 +1,33 @@
+# Plantilla para tareas de diagnóstico (análisis de problemas)
+
+goal_template: "Analizar y diagnosticar el problema: {query}"
+
+musts:
+  - "Identificar síntomas específicos y medibles"
+  - "Proponer causas probables con evidencia"
+  - "Sugerir soluciones verificadas y priorizadas"
+  - "Incluir sección 'Diagnóstico' y 'Soluciones'"
+  - "Mencionar nivel de confianza en el diagnóstico"
+  - "Considerar impacto y urgencia del problema"
+  - "Proponer pasos de verificación"
+
+format: "Markdown con secciones de diagnóstico, causas y soluciones"
+
+metrics:
+  accuracy_score: 0.9
+  solution_quality: 0.8
+  confidence_calibration: 0.8
+  max_tokens: 1200
+  diagnosis_depth: 0.9
+
+risk_factors:
+  - "Problemas de seguridad o privacidad"
+  - "Pérdida de datos o corrupción"
+  - "Interrupción de servicios críticos"
+  - "Vulnerabilidades de seguridad"
+
+context_requirements:
+  min_sources: 3
+  max_sources: 7
+  require_error_logs: true
+  require_system_info: true
