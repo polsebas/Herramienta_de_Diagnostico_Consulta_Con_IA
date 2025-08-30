@@ -1,0 +1,43 @@
+query_type: "decision"
+description: "Consultas que requieren análisis de opciones y recomendaciones"
+goal: "Analizar alternativas y recomendar basado en evidencia del contexto"
+
+requirements:
+  - "Usar solo pasajes recuperados y citarlos"
+  - "Limitar a 3-5 chunks relevantes"
+  - "Indicar suposiciones explícitas"
+  - "Incluir sección 'Fuentes' con título de doc y línea"
+  - "Presentar opciones con pros y contras"
+  - "Recomendar basado en evidencia del contexto"
+
+output_format:
+  structure:
+    - "Resumen del problema/decision"
+    - "Opciones disponibles (con pros y contras)"
+    - "Criterios de evaluación"
+    - "Recomendación con justificación"
+    - "Riesgos y consideraciones"
+    - "Fuentes citadas"
+
+  constraints:
+    max_tokens: 1000
+    options_min: 2
+    options_max: 5
+    include_risks: true
+
+metrics:
+  precision_target: 0.85
+  decision_quality: 0.8
+  justification_strength: 0.85
+
+examples:
+  - "¿Qué base de datos elegir para este proyecto?"
+  - "¿Debería usar microservicios o monolitico?"
+  - "¿Cuál framework es mejor para esta aplicación?"
+
+validation_rules:
+  - "Debe presentar al menos 2 opciones"
+  - "Cada opción debe tener pros y contras"
+  - "Los criterios de evaluación deben ser claros"
+  - "La recomendación debe estar justificada"
+  - "Debe considerar riesgos y limitaciones"

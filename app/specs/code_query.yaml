@@ -1,0 +1,43 @@
+query_type: "code"
+description: "Consultas que requieren implementación de código y ejemplos"
+goal: "Proporcionar implementación funcional con explicación clara"
+
+requirements:
+  - "Usar solo pasajes recuperados y citarlos"
+  - "Limitar a 3-5 chunks relevantes"
+  - "Indicar suposiciones explícitas"
+  - "Incluir sección 'Fuentes' con título de doc y línea"
+  - "Proporcionar código funcional y bien comentado"
+  - "Explicar la lógica y consideraciones de implementación"
+
+output_format:
+  structure:
+    - "Resumen del problema/requerimiento"
+    - "Enfoque de implementación"
+    - "Código comentado y funcional"
+    - "Explicación de la lógica"
+    - "Consideraciones y alternativas"
+    - "Fuentes citadas"
+
+  constraints:
+    max_tokens: 1500
+    code_quality: "high"
+    include_comments: true
+    include_explanation: true
+
+metrics:
+  precision_target: 0.9
+  code_functionality: 0.95
+  explanation_clarity: 0.9
+
+examples:
+  - "¿Cómo implemento autenticación JWT?"
+  - "¿Cómo creo un endpoint REST con FastAPI?"
+  - "¿Cómo configuro logging en Python?"
+
+validation_rules:
+  - "El código debe ser funcional y ejecutable"
+  - "Debe incluir comentarios explicativos"
+  - "La explicación debe ser clara y completa"
+  - "Debe considerar casos edge y errores"
+  - "Las fuentes deben ser relevantes al código"
