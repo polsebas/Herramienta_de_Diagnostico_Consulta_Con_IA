@@ -1,0 +1,329 @@
+# Configuración del sistema Human-in-the-Loop
+# Este archivo define los parámetros del sistema de aprobaciones humanas
+
+# Configuración general del sistema
+system:
+  # Modo de operación
+  mode: "conservative"  # conservative | assisted | autonomous
+  default_timeout_hours: 24
+  max_concurrent_approvals: 100
+  cleanup_interval_minutes: 30
+  
+  # Configuración de reintentos
+  retry_attempts: 3
+  retry_delay_seconds: 60
+  
+  # Configuración de auditoría
+  enable_audit_log: true
+  audit_log_file: "logs/human_loop_audit.jsonl"
+  retention_days: 90
+
+# Configuración de notificaciones
+notifications:
+  # Slack
+  slack:
+    enabled: false
+    webhook_url: ""  # Configurar como variable de entorno
+    channel: "#github-indexing"
+    username: "Human-Loop-Bot"
+    icon_emoji: ":robot_face:"
+    
+    # Configuración de mensajes
+    message_format: "rich"  # rich | simple
+    include_actions: true   # Botones de aprobar/rechazar
+    include_metadata: true  # Metadatos adicionales
+    
+  # GitHub
+  github:
+    enabled: false
+    token: ""  # Configurar como variable de entorno
+    repo: ""   # owner/repo
+    issue_labels: ["human-approval-required"]
+    
+    # Configuración de comentarios
+    comment_template: "default"
+    include_metadata: true
+    auto_close_approved: true
+    
+  # Email
+  email:
+    enabled: false
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""  # Configurar como variable de entorno
+    from_address: ""
+    to_addresses: []
+    
+    # Configuración de plantillas
+    subject_template: "Aprobación requerida: {action_type}"
+    html_template: true
+    include_metadata: true
+    
+  # Webhook
+  webhook:
+    enabled: false
+    url: ""  # Configurar como variable de entorno
+    method: "POST"
+    headers: {}
+    timeout_seconds: 30
+    
+    # Configuración de payload
+    include_full_payload: true
+    include_metadata: true
+    retry_on_failure: true
+
+# Configuración de seguridad y rutas críticas
+security:
+  # Rutas críticas que requieren aprobación
+  critical_paths:
+    - "/auth/"
+    - "/payments/"
+    - "/migrations/"
+    - "/infra/"
+    - "/security/"
+    - "/admin/"
+    - "/config/"
+  
+  # Labels que indican alto riesgo
+  high_risk_labels:
+    - "security"
+    - "critical"
+    - "high-priority"
+    - "breaking-change"
+    - "production"
+    - "database"
+    - "api"
+  
+  # Usuarios que pueden aprobar cambios críticos
+  authorized_users:
+    - "admin"
+    - "devlead"
+    - "security-team"
+    - "devops-lead"
+    - "tech-lead"
+  
+  # Configuración de umbrales de riesgo
+  risk_thresholds:
+    critical: 0.8      # Acciones críticas
+    high: 0.6          # Acciones de alto riesgo
+    medium: 0.4         # Acciones de riesgo medio
+    low: 0.2           # Acciones de bajo riesgo
+  
+  # Factores de riesgo y sus pesos
+  risk_factors:
+    critical_paths: 0.4        # Rutas críticas (peso alto)
+    many_files: 0.2            # Muchos archivos afectados
+    sensitive_files: 0.2       # Archivos sensibles
+    high_risk_labels: 0.2      # Labels de alto riesgo
+
+# Configuración de tipos de acción
+action_types:
+  # Acciones de desarrollo
+  development:
+    - "code_review"
+    - "merge_request"
+    - "deployment"
+    - "database_migration"
+    - "config_change"
+    
+  # Acciones de infraestructura
+  infrastructure:
+    - "server_config"
+    - "network_change"
+    - "security_update"
+    - "backup_restore"
+    - "scaling_operation"
+    
+  # Acciones de seguridad
+  security:
+    - "access_grant"
+    - "permission_change"
+    - "security_patch"
+    - "vulnerability_fix"
+    - "audit_log_access"
+    
+  # Acciones de producción
+  production:
+    - "hotfix_deployment"
+    - "rollback"
+    - "maintenance_window"
+    - "performance_tuning"
+    - "monitoring_change"
+
+# Configuración de timeouts por tipo de acción
+timeouts:
+  # Acciones críticas (timeout corto)
+  critical:
+    - "security_update": 2      # 2 horas
+    - "hotfix_deployment": 1    # 1 hora
+    - "emergency_rollback": 1   # 1 hora
+    
+  # Acciones de alto riesgo
+  high:
+    - "production_deployment": 4    # 4 horas
+    - "database_migration": 6      # 6 horas
+    - "infrastructure_change": 8   # 8 horas
+    
+  # Acciones de riesgo medio
+  medium:
+    - "feature_deployment": 12     # 12 horas
+    - "config_change": 24          # 24 horas
+    - "code_review": 48            # 48 horas
+    
+  # Acciones de bajo riesgo
+  low:
+    - "documentation_update": 72   # 72 horas
+    - "test_update": 96            # 96 horas
+    - "minor_fix": 120             # 120 horas
+
+# Configuración de notificaciones por tipo de acción
+action_notifications:
+  # Acciones críticas
+  critical:
+    - "slack"
+    - "webhook"
+    - "email"
+    
+  # Acciones de alto riesgo
+  high:
+    - "slack"
+    - "webhook"
+    
+  # Acciones de riesgo medio
+  medium:
+    - "slack"
+    
+  # Acciones de bajo riesgo
+  low:
+    - "webhook"
+
+# Configuración de callbacks
+callbacks:
+  # Habilitar sistema de callbacks
+  enabled: true
+  
+  # Callbacks por tipo de acción
+  action_callbacks:
+    deployment:
+      - "notify_team"
+      - "update_status"
+      - "log_action"
+      
+    security_update:
+      - "notify_security_team"
+      - "update_security_log"
+      - "trigger_audit"
+      
+    database_migration:
+      - "notify_dba_team"
+      - "backup_database"
+      - "update_schema_log"
+
+# Configuración de auditoría
+audit:
+  # Habilitar auditoría completa
+  enabled: true
+  
+  # Campos a auditar
+  audit_fields:
+    - "approval_id"
+    - "action_type"
+    - "requester"
+    - "approver"
+    - "timestamp"
+    - "decision"
+    - "reason"
+    - "metadata"
+    - "risk_score"
+    - "files_affected"
+  
+  # Formato de logs
+  log_format: "jsonl"  # jsonl | json | csv
+  
+  # Rotación de logs
+  log_rotation:
+    max_size_mb: 100
+    backup_count: 5
+    compress: true
+
+# Configuración de desarrollo
+development:
+  # Modo de desarrollo
+  debug_mode: false
+  
+  # Mocks para desarrollo
+  enable_mocks: false
+  
+  # Configuración de pruebas
+  test_mode:
+    enabled: false
+    mock_notifications: true
+    mock_approvals: true
+    test_timeout_seconds: 5
+  
+  # Configuración de logging
+  logging:
+    level: "INFO"  # DEBUG | INFO | WARNING | ERROR
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    file: "logs/human_loop.log"
+    console: true
+
+# Configuración de integración
+integration:
+  # Integración con GitHub
+  github:
+    webhook_secret: ""  # Configurar como variable de entorno
+    auto_approve_bots: false
+    require_team_review: true
+    
+  # Integración con Slack
+  slack:
+    interactive_buttons: true
+    slash_commands: false
+    app_mentions: true
+    
+  # Integración con sistemas externos
+  external_systems:
+    - name: "jira"
+      enabled: false
+      webhook_url: ""
+      auto_create_ticket: false
+      
+    - name: "pagerduty"
+      enabled: false
+      api_key: ""
+      escalation_policy: ""
+      
+    - name: "datadog"
+      enabled: false
+      api_key: ""
+      monitor_tags: ["human-approval"]
+
+# Configuración de métricas
+metrics:
+  # Habilitar métricas
+  enabled: true
+  
+  # Métricas a recolectar
+  collect_metrics:
+    - "approval_rate"
+    - "response_time"
+    - "risk_distribution"
+    - "action_type_distribution"
+    - "user_activity"
+    - "system_performance"
+  
+  # Exportación de métricas
+  export:
+    format: "json"  # json | prometheus | statsd
+    interval_seconds: 60
+    endpoint: ""
+    
+  # Alertas
+  alerts:
+    enabled: true
+    thresholds:
+      low_approval_rate: 0.8      # Alertar si < 80%
+      high_response_time: 3600    # Alertar si > 1 hora
+      many_pending: 10            # Alertar si > 10 pendientes

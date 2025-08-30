@@ -32,6 +32,9 @@ openpyxl>=3.1.0
 PyGithub>=2.1.0
 PyYAML>=6.0.0
 
+# Dependencias para PR-B (Human-in-the-Loop)
+aiohttp>=3.8.0
+
 # Desarrollo y testing
 pylint
 pytest>=7.4.0
