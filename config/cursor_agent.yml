@@ -1,0 +1,240 @@
+# Configuración del Cursor Agent - Sistema de Agentes en Background
+
+# Configuración general del agente
+general:
+  max_concurrent_tasks: 3
+  task_timeout_minutes: 30
+  auto_cleanup_old_tasks: true
+  cleanup_after_days: 7
+  enable_logging: true
+  log_level: "INFO"
+
+# Configuración de seguridad del workspace
+workspace_safety:
+  # Extensiones de archivo permitidas
+  safe_file_extensions:
+    - ".py"
+    - ".js"
+    - ".ts"
+    - ".md"
+    - ".yml"
+    - ".yaml"
+    - ".json"
+    - ".txt"
+    - ".rst"
+    - ".html"
+    - ".css"
+    - ".scss"
+    - ".sql"
+    - ".sh"
+    - ".bat"
+    - ".ps1"
+  
+  # Rutas prohibidas (nunca modificar)
+  forbidden_paths:
+    - "/etc/"
+    - "/var/"
+    - "/usr/"
+    - "/bin/"
+    - "/sbin/"
+    - "/root/"
+    - "/home/"
+    - "/tmp/"
+    - "/proc/"
+    - "/sys/"
+  
+  # Tamaño máximo de archivo (MB)
+  max_file_size_mb: 10
+  
+  # Comandos permitidos para ejecutar
+  allowed_commands:
+    - "git"
+    - "python"
+    - "pip"
+    - "npm"
+    - "yarn"
+    - "node"
+    - "docker"
+    - "docker-compose"
+    - "make"
+    - "cmake"
+    - "gcc"
+    - "g++"
+    - "clang"
+    - "clang++"
+
+# Configuración de Git
+git:
+  auto_commit: false
+  auto_push: false
+  create_backup: true
+  backup_branch_prefix: "backup/"
+  commit_message_template: "feat: Auto-generated {task_type} by Cursor Agent\n\n{goal}"
+  branch_naming:
+    feature_prefix: "feature/auto-"
+    bugfix_prefix: "bugfix/auto-"
+    hotfix_prefix: "hotfix/auto-"
+    include_timestamp: true
+    timestamp_format: "%Y%m%d-%H%M%S"
+
+# Configuración de tareas
+tasks:
+  # Generación de Draft PRs
+  draft_pr:
+    enabled: true
+    max_files_per_pr: 10
+    require_tests: true
+    require_documentation: true
+    auto_create_branch: true
+    include_pr_description: true
+  
+  # Generación de Tests
+  generate_tests:
+    enabled: true
+    test_frameworks:
+      - "pytest"
+      - "unittest"
+      - "jest"
+      - "mocha"
+    test_types:
+      - "unit"
+      - "integration"
+      - "performance"
+      - "security"
+    coverage_threshold: 80
+  
+  # Generación de Documentación
+  generate_docs:
+    enabled: true
+    doc_formats:
+      - "markdown"
+      - "rst"
+      - "html"
+    doc_types:
+      - "readme"
+      - "api_docs"
+      - "technical_docs"
+      - "user_guide"
+      - "developer_guide"
+  
+  # Code Review
+  code_review:
+    enabled: true
+    review_aspects:
+      - "security"
+      - "performance"
+      - "readability"
+      - "maintainability"
+      - "testing"
+    auto_suggestions: true
+  
+  # Refactoring
+  refactor:
+    enabled: true
+    refactor_types:
+      - "extract_method"
+      - "extract_class"
+      - "simplify_conditionals"
+      - "remove_duplication"
+      - "improve_naming"
+    preserve_functionality: true
+  
+  # Security Scan
+  security_scan:
+    enabled: true
+    scan_types:
+      - "dependency_vulnerabilities"
+      - "code_injection"
+      - "sql_injection"
+      - "xss"
+      - "authentication"
+      - "authorization"
+    fail_on_critical: true
+  
+  # Performance Optimization
+  performance_optimization:
+    enabled: true
+    optimization_types:
+      - "algorithm_improvement"
+      - "memory_optimization"
+      - "database_optimization"
+      - "caching"
+      - "async_operations"
+    benchmark_before_after: true
+
+# Configuración de notificaciones
+notifications:
+  channels:
+    - "console"
+    - "file"
+    - "slack"
+    - "email"
+    - "github"
+  
+  # Notificaciones por tipo de evento
+  events:
+    task_started: true
+    task_completed: true
+    task_failed: true
+    task_cancelled: true
+    human_approval_required: true
+    security_issues_found: true
+  
+  # Configuración de Slack
+  slack:
+    webhook_url: ""
+    channel: "#cursor-agent"
+    username: "Cursor Agent"
+    icon_emoji: ":robot_face:"
+  
+  # Configuración de Email
+  email:
+    smtp_server: ""
+    smtp_port: 587
+    username: ""
+    password: ""
+    from_address: "cursor-agent@company.com"
+    to_addresses: []
+
+# Configuración de métricas y monitoreo
+metrics:
+  track_execution_time: true
+  track_success_rate: true
+  track_file_changes: true
+  track_git_operations: true
+  export_to_dashboard: true
+  retention_days: 30
+
+# Configuración de desarrollo
+development:
+  debug_mode: false
+  mock_git_operations: false
+  mock_file_operations: false
+  test_mode: false
+  verbose_logging: false
+
+# Configuración de integración
+integration:
+  # Integración con Context Manager
+  context_manager:
+    enabled: true
+    max_context_chunks: 10
+    context_relevance_threshold: 0.7
+  
+  # Integración con Human-in-the-Loop
+  human_loop:
+    enabled: true
+    require_approval_for:
+      - "critical_paths"
+      - "high_risk_operations"
+      - "production_changes"
+      - "security_modifications"
+    approval_timeout_hours: 24
+    escalation_threshold_minutes: 60
+  
+  # Integración con Spec Layer
+  spec_layer:
+    enabled: true
+    auto_generate_contracts: true
+    validate_contracts: true
+    enforce_contract_compliance: true

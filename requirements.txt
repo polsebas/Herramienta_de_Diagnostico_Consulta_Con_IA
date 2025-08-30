@@ -35,6 +35,9 @@ PyYAML>=6.0.0
 # Dependencias para PR-B (Human-in-the-Loop)
 aiohttp>=3.8.0
 
+# Dependencias para PR-D (Cursor Integration)
+aiofiles>=23.2.1
+
 # Desarrollo y testing
 pylint
 pytest>=7.4.0
