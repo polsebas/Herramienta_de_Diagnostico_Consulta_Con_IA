@@ -1,0 +1,35 @@
+# Plantilla para generación de código
+
+goal_template: "Generar código funcional y bien documentado para: {query}"
+
+musts:
+  - "Incluir comentarios explicativos y documentación"
+  - "Seguir mejores prácticas del lenguaje específico"
+  - "Incluir ejemplos de uso y casos de prueba"
+  - "Mencionar dependencias y requisitos"
+  - "Considerar manejo de errores y edge cases"
+  - "Incluir sección 'Fuentes' con referencias"
+  - "Proporcionar código funcional y ejecutable"
+
+format: "Código con comentarios, documentación y ejemplos de uso"
+
+metrics:
+  code_quality: 0.9
+  documentation_score: 0.8
+  testability: 0.8
+  max_tokens: 1500
+  complexity_score: 0.7
+
+risk_factors:
+  - "Código que maneja datos sensibles"
+  - "Funciones de autenticación/autorización"
+  - "Código que accede a bases de datos"
+  - "Integración con APIs externas"
+  - "Código de despliegue o configuración"
+
+context_requirements:
+  min_sources: 2
+  max_sources: 6
+  require_code_examples: true
+  require_documentation: true
+  require_tests: false

@@ -1,0 +1,34 @@
+# Plantilla para tareas procedimentales (cómo hacer algo)
+
+goal_template: "Proporcionar pasos claros y accionables para: {query}"
+
+musts:
+  - "Usar solo información de fuentes verificadas y citarlas"
+  - "Incluir pasos numerados y secuenciales"
+  - "Mencionar requisitos previos si existen"
+  - "Incluir sección 'Fuentes' con referencias precisas"
+  - "Proporcionar pasos verificables y medibles"
+  - "Incluir consideraciones de seguridad si aplica"
+  - "Mencionar posibles obstáculos y soluciones"
+
+format: "Markdown con pasos numerados, sección de fuentes y consideraciones"
+
+metrics:
+  clarity_score: 0.9
+  completeness_score: 0.8
+  actionability_score: 0.9
+  max_tokens: 1000
+  steps_min: 3
+  steps_max: 10
+
+risk_factors:
+  - "Modificación de configuraciones críticas"
+  - "Acceso a sistemas de producción"
+  - "Cambios en autenticación/autorización"
+  - "Modificación de datos sensibles"
+
+context_requirements:
+  min_sources: 2
+  max_sources: 5
+  require_code_examples: false
+  require_diagrams: false
