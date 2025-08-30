@@ -80,21 +80,82 @@ El sistema proporciona consultas inteligentes, análisis automatizado de proyect
 ┌─────────────────────────────────────────────────────────────┐
 │                Sistema RAG de Siguiente Nivel               │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │ Spec Layer  │  │   Context   │  │  Retrieval  │        │
-│  │             │  │  Manager    │  │   System    │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │ Spec Layer  │  │   Context   │  │  Retrieval  │          │
+│  │             │  │  Manager    │  │   System    │          │
+│  └─────────────┘  └─────────────┘  └─────────────┘          │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │ Subagents   │  │ Human Loop  │  │  Pipeline   │        │
-│  │ Pipeline    │  │   System    │  │  Metrics    │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │ Subagents   │  │ Human Loop  │  │  Pipeline   │          │
+│  │ Pipeline    │  │   System    │  │  Metrics    │          │ 
+│  └─────────────┘  └─────────────┘  └─────────────┘          │
 ├─────────────────────────────────────────────────────────────┤
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
-│  │   GitHub    │  │  Milvus     │  │  Advanced   │        │
-│  │ Integration │  │  Vector DB  │  │  Analytics  │        │
-│  └─────────────┘  └─────────────┘  └─────────────┘        │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
+│  │   GitHub    │  │  Milvus     │  │  Advanced   │          │
+│  │ Integration │  │  Vector DB  │  │  Analytics  │          │
+│  └─────────────┘  └─────────────┘  └─────────────┘          │
 └─────────────────────────────────────────────────────────────┘
+```
+
+### **Estructura del Proyecto**
+
+```
+Herramienta_de_Diagnostico_Consulta_Con_IA/
+├── 📁 app/                          # Módulos principales de la aplicación
+│   ├── 📁 api/                      # Endpoints de FastAPI
+│   ├── 📁 retrieval/                # Sistema de recuperación híbrido
+│   ├── 📁 subagents/                # Pipeline de subagentes
+│   ├── 📁 specs/                    # Plantillas de contratos de tarea
+│   ├── 📁 prompts/                  # Prompts del sistema
+│   ├── 📁 eval/                     # Componentes de evaluación
+│   ├── context_manager.py           # Gestión avanzada de contexto
+│   ├── context_logger.py            # Logging de contexto
+│   ├── dashboard_context.py         # Dashboard de Streamlit
+│   ├── pipeline_metrics.py          # Métricas de performance del pipeline
+│   ├── spec_layer.py                # Arquitectura spec-first
+│   ├── human_loop.py                # Sistema human-in-the-loop
+│   └── cursor_agent.py              # Agente de tareas en background
+├── 📁 config/                       # Archivos de configuración
+│   ├── spec_layer.yml               # Configuración del spec layer
+│   ├── human_loop.yml               # Configuración del human loop
+│   ├── cursor_agent.yml             # Configuración del cursor agent
+│   ├── evaluation.yml               # Configuración del sistema de evaluación
+│   └── github_indexing.yml          # Configuración de integración con GitHub
+├── 📁 docs/                         # Documentación completa
+│   ├── README.md                    # Índice de documentación
+│   ├── MANUAL_USUARIO.md            # Manual de Usuario (Español)
+│   ├── USER_MANUAL.md               # Manual de Usuario (Inglés)
+│   ├── README_PR1.md                # PR-1: Arquitectura Spec-First
+│   ├── README_PR2.md                # PR-2: Gestión de Contexto
+│   ├── README_PR3.md                # PR-3: Recuperación Híbrida
+│   ├── README_PR4.md                # PR-4: Pipeline de Subagentes
+│   ├── README_PR-A.md               # PR-A: Integración con GitHub
+│   ├── README_PR-B.md               # PR-B: Human-in-the-Loop
+│   ├── README_PR-C.md               # PR-C: Integración del Spec Layer
+│   ├── README_PR-D.md               # PR-D: Integración con Cursor
+│   ├── README_PR-E.md               # PR-E: Auditoría y Evaluación
+│   └── README_NEXT_LEVEL.md         # Plan original de evolución
+├── 📁 tests/                        # Tests, ejemplos y auditorías
+│   ├── README.md                    # Documentación de tests
+│   ├── audit_system_completeness.py # Auditoría de completitud del sistema
+│   ├── example_spec_layer.py        # Ejemplos del spec layer
+│   ├── example_human_loop.py        # Ejemplos del human loop
+│   ├── example_cursor_integration.py # Ejemplos de integración con cursor
+│   ├── example_evaluation_system.py # Ejemplos del sistema de evaluación
+│   ├── example_pipeline_subagents.py # Ejemplos del pipeline de subagentes
+│   └── test_github_indexing.py      # Tests de indexación de GitHub
+├── 📁 scripts/                      # Scripts de utilidad
+│   └── index_github.py              # Indexador de PRs/Issues de GitHub
+├── 📁 eval/                         # Evaluación y métricas
+│   └── evaluate_plans.py            # Sistema evaluador de planes
+├── 📁 logs/                         # Logs de auditoría y métricas
+│   └── audit.jsonl                  # Registro completo de auditoría
+├── 📁 knowledge_base/               # Archivos de base de conocimiento
+├── README.md                        # Documentación principal del proyecto (Inglés)
+├── LEAME.md                         # Documentación principal del proyecto (Español)
+├── PROGRESS.MD                      # Progreso del proyecto y roadmap
+├── requirements.txt                 # Dependencias de Python
+└── setup.py                         # Configuración e instalación del proyecto
 ```
 
 ### **Flujo de Datos**
