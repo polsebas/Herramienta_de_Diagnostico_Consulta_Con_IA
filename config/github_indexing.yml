@@ -1,0 +1,136 @@
+# Configuración para la indexación de GitHub
+# Este archivo define los parámetros del sistema de indexación
+
+# Configuración de GitHub
+github:
+  # Token de autenticación (se debe configurar como variable de entorno)
+  # GITHUB_TOKEN=your_github_token
+  api_rate_limit: 5000  # Límite de requests por hora
+  retry_attempts: 3     # Número de reintentos en caso de error
+  timeout_seconds: 30   # Timeout para requests de API
+
+# Configuración de Milvus
+milvus:
+  uri: "localhost:19530"           # URI de conexión a Milvus
+  collection_name: "github_items"  # Nombre de la colección
+  embedding_dimension: 384         # Dimensión de los embeddings
+  index_type: "HNSW"               # Tipo de índice (HNSW o IVF_FLAT)
+  metric_type: "IP"                # Tipo de métrica (IP para similitud coseno)
+
+# Configuración de indexación
+indexing:
+  # Límites por defecto
+  default_limit: 50                # Límite por defecto de items a indexar
+  max_items_per_batch: 100        # Máximo items por lote
+  batch_delay_seconds: 1          # Delay entre lotes para evitar rate limiting
+  
+  # Filtros por defecto
+  default_since_date: "2025-01-01"  # Fecha por defecto para indexar desde
+  include_closed: true             # Incluir PRs/issues cerrados
+  include_draft: true              # Incluir PRs en draft
+  
+  # Tipos de items a indexar por defecto
+  default_types: ["both"]          # "prs", "issues", "both"
+  
+  # Archivos a excluir (no indexar)
+  exclude_files:
+    - "*.log"
+    - "*.tmp"
+    - "node_modules/**"
+    - ".git/**"
+    - "*.pyc"
+    - "__pycache__/**"
+
+# Configuración de embeddings
+embeddings:
+  # Modelo de embedding (por ahora simulado)
+  model_name: "simulated"          # "sentence-transformers/all-MiniLM-L6-v2"
+  max_text_length: 512            # Longitud máxima del texto para embedding
+  normalize: true                  # Normalizar embeddings
+  
+  # Configuración para embeddings reales (cuando se implemente)
+  sentence_transformers:
+    device: "cpu"                  # "cpu" o "cuda"
+    batch_size: 32                 # Tamaño del lote para procesamiento
+
+# Configuración de logging
+logging:
+  level: "INFO"                    # Nivel de logging (DEBUG, INFO, WARNING, ERROR)
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/github_indexing.log" # Archivo de log
+  max_size_mb: 100                # Tamaño máximo del archivo de log
+  backup_count: 5                  # Número de archivos de backup
+
+# Configuración de métricas
+metrics:
+  # Umbrales de éxito
+  success_rate_threshold: 0.95     # Umbral mínimo de éxito (95%)
+  error_rate_threshold: 0.05       # Umbral máximo de errores (5%)
+  
+  # Alertas
+  enable_alerts: true              # Habilitar alertas
+  alert_on_failure: true           # Alertar en caso de fallo
+  alert_on_slow_indexing: true     # Alertar si la indexación es lenta
+  
+  # Umbrales de rendimiento
+  max_indexing_time_seconds: 300   # Tiempo máximo esperado para indexar 50 items
+  min_items_per_minute: 10         # Mínimo items por minuto
+
+# Configuración de notificaciones
+notifications:
+  # Slack (opcional)
+  slack:
+    enabled: false                 # Habilitar notificaciones de Slack
+    webhook_url: ""                # URL del webhook de Slack
+    channel: "#github-indexing"    # Canal de Slack
+    
+  # Email (opcional)
+  email:
+    enabled: false                 # Habilitar notificaciones por email
+    smtp_server: ""                # Servidor SMTP
+    smtp_port: 587                 # Puerto SMTP
+    username: ""                   # Usuario SMTP
+    password: ""                   # Contraseña SMTP
+    from_address: ""               # Dirección de origen
+    to_addresses: []               # Direcciones de destino
+
+# Configuración de seguridad
+security:
+  # Rutas críticas que requieren aprobación manual
+  critical_paths:
+    - "/auth/"
+    - "/payments/"
+    - "/migrations/"
+    - "/infra/"
+    - "/security/"
+  
+  # Labels que indican alto riesgo
+  high_risk_labels:
+    - "security"
+    - "critical"
+    - "high-priority"
+    - "breaking-change"
+  
+  # Usuarios que pueden aprobar cambios críticos
+  authorized_users:
+    - "admin"
+    - "devlead"
+    - "security-team"
+
+# Configuración de desarrollo
+development:
+  # Modo de desarrollo
+  debug_mode: false                # Habilitar modo debug
+  mock_github: false               # Usar mocks de GitHub para desarrollo
+  mock_milvus: false               # Usar mocks de Milvus para desarrollo
+  
+  # Datos de prueba
+  test_repositories:
+    - "test-owner/test-repo"
+    - "demo-org/demo-project"
+  
+  # Configuración de pruebas
+  test_mode:
+    enabled: false                 # Habilitar modo de pruebas
+    max_test_items: 10             # Máximo items para pruebas
+    test_collection: "test_items"  # Colección de pruebas separada
