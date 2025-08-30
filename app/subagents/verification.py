@@ -6,6 +6,7 @@ import logging
 import re
 from typing import List, Dict, Any, Optional
 from pathlib import Path
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -369,42 +370,106 @@ class VerificationSubAgent:
                 "reason": f"Baja coincidencia: {overlap_ratio:.2f}"
             }
     
-    def comprehensive_verification(self, response: str, contract: Dict[str, Any], 
-                                 context: str) -> Dict[str, Any]:
+    async def comprehensive_verification(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """
         Realiza una verificación comprehensiva de la respuesta.
         
         Args:
-            response: Respuesta generada
-            contract: Contrato de tarea
-            context: Contexto recuperado
+            context: Contexto completo para la verificación
+                - synthesis: Respuesta generada a verificar
+                - contract: Contrato de tarea
+                - chunks: Chunks utilizados para generar la respuesta
+                - threshold: Umbral mínimo de verificación
         
         Returns:
             Dict con verificación comprehensiva
         """
-        self.logger.info("Iniciando verificación comprehensiva")
-        
-        # Verificación automática
-        auto_check = self.self_check(response, contract)
-        
-        # Detección de alucinaciones
-        hallucination_check = self.detect_hallucinations(response, context)
-        
-        # Verificación de cumplimiento del contrato
-        contract_compliance = self._verify_contract_compliance(response, contract)
-        
-        # Resultado comprehensivo
-        comprehensive_result = {
-            "automatic_check": auto_check,
-            "hallucination_detection": hallucination_check,
-            "contract_compliance": contract_compliance,
-            "overall_assessment": self._generate_overall_assessment(
+        try:
+            synthesis = context["synthesis"]
+            contract = context["contract"]
+            chunks = context["chunks"]
+            threshold = context.get("threshold", 0.8)
+            
+            self.logger.info("Iniciando verificación comprehensiva")
+            
+            # Verificación automática
+            auto_check = self.self_check(synthesis, contract)
+            
+            # Detección de alucinaciones
+            chunks_text = "\n".join([chunk.text for chunk in chunks])
+            hallucination_check = self.detect_hallucinations(synthesis, chunks_text)
+            
+            # Verificación de cumplimiento del contrato
+            contract_compliance = self._verify_contract_compliance(synthesis, contract)
+            
+            # Verificación de cobertura de fuentes
+            coverage_check = self._verify_source_coverage(synthesis, chunks)
+            
+            # Verificación de consistencia interna
+            consistency_check = self._verify_internal_consistency(synthesis)
+            
+            # Verificación de factualidad
+            factual_check = self._verify_factual_accuracy(synthesis, chunks)
+            
+            # Calcular scores ponderados
+            scores = {
+                "basic": max(0.0, 1.0 - (len(auto_check.get("violations", [])) * 0.15)),
+                "hallucination": hallucination_check.get("confidence_score", 0.0),
+                "contract": self._calculate_contract_score(contract_compliance),
+                "coverage": coverage_check.get("score", 0.0),
+                "consistency": consistency_check.get("score", 0.0),
+                "factual": factual_check.get("score", 0.0)
+            }
+            
+            # Pesos para cada tipo de verificación
+            weights = {
+                "basic": 0.15,
+                "hallucination": 0.25,      # Más importante
+                "contract": 0.20,
+                "coverage": 0.15,
+                "consistency": 0.15,
+                "factual": 0.10
+            }
+            
+            # Score general ponderado
+            overall_score = sum(scores[key] * weights[key] for key in scores)
+            
+            # Determinar estado de verificación
+            verification_status = "passed" if overall_score >= threshold else "failed"
+            
+            # Generar recomendaciones
+            recommendations = self._generate_verification_recommendations(
                 auto_check, hallucination_check, contract_compliance
             )
-        }
-        
-        self.logger.info("Verificación comprehensiva completada")
-        return comprehensive_result
+            
+            # Resultado comprehensivo
+            comprehensive_result = {
+                "overall_score": overall_score,
+                "verification_status": verification_status,
+                "threshold": threshold,
+                "scores": scores,
+                "weights": weights,
+                "automatic_check": auto_check,
+                "hallucination_detection": hallucination_check,
+                "contract_compliance": contract_compliance,
+                "coverage_check": coverage_check,
+                "consistency_check": consistency_check,
+                "factual_check": factual_check,
+                "recommendations": recommendations,
+                "verification_timestamp": datetime.now().isoformat()
+            }
+            
+            self.logger.info(f"Verificación comprehensiva completada: score {overall_score:.2f}")
+            return comprehensive_result
+            
+        except Exception as e:
+            self.logger.error(f"Error en verificación comprehensiva: {e}")
+            return {
+                "overall_score": 0.0,
+                "verification_status": "error",
+                "error": str(e),
+                "verification_timestamp": datetime.now().isoformat()
+            }
     
     def _verify_contract_compliance(self, response: str, contract: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -602,6 +667,283 @@ class VerificationSubAgent:
             recommendations.append("Asegurar que se cumpla el objetivo principal")
         
         if not contract_compliance.get("format_compliance"):
+            recommendations.append("Ajustar formato según especificaciones del contrato")
+        
+        if contract_compliance.get("requirements_missing"):
+            missing_count = len(contract_compliance["requirements_missing"])
+            recommendations.append(f"Implementar {missing_count} requisitos faltantes")
+        
+        return recommendations
+    
+    def _verify_source_coverage(self, synthesis: str, chunks: List[Any]) -> Dict[str, Any]:
+        """
+        Verifica la cobertura de fuentes en la respuesta.
+        
+        Args:
+            synthesis: Respuesta generada
+            chunks: Chunks utilizados para generar la respuesta
+        
+        Returns:
+            Dict con análisis de cobertura de fuentes
+        """
+        try:
+            # Extraer fuentes mencionadas en la síntesis
+            mentioned_sources = self._extract_mentioned_sources(synthesis)
+            
+            # Obtener fuentes disponibles de los chunks
+            available_sources = set()
+            for chunk in chunks:
+                if hasattr(chunk, 'metadata') and chunk.metadata:
+                    source = chunk.metadata.get('title', '') or chunk.metadata.get('path', '')
+                    if source:
+                        available_sources.add(source)
+            
+            # Calcular métricas de cobertura
+            total_mentioned = len(mentioned_sources)
+            total_available = len(available_sources)
+            
+            if total_available == 0:
+                coverage_score = 0.0
+            else:
+                coverage_score = min(1.0, total_mentioned / total_available)
+            
+            # Identificar fuentes no utilizadas
+            unused_sources = available_sources - mentioned_sources
+            
+            return {
+                "score": coverage_score,
+                "mentioned_sources": list(mentioned_sources),
+                "available_sources": list(available_sources),
+                "unused_sources": list(unused_sources),
+                "coverage_ratio": coverage_score,
+                "total_mentioned": total_mentioned,
+                "total_available": total_available
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error verificando cobertura de fuentes: {e}")
+            return {
+                "score": 0.0,
+                "error": str(e)
+            }
+    
+    def _verify_internal_consistency(self, synthesis: str) -> Dict[str, Any]:
+        """
+        Verifica la consistencia interna de la respuesta.
+        
+        Args:
+            synthesis: Respuesta generada
+        
+        Returns:
+            Dict con análisis de consistencia
+        """
+        try:
+            consistency_issues = []
+            
+            # Verificar consistencia de numeración
+            if re.search(r'\d+\.', synthesis):
+                numbers = re.findall(r'(\d+)\.', synthesis)
+                if numbers:
+                    expected_sequence = list(range(1, len(numbers) + 1))
+                    actual_sequence = [int(n) for n in numbers]
+                    if actual_sequence != expected_sequence:
+                        consistency_issues.append("Numeración de pasos inconsistente")
+            
+            # Verificar consistencia de formato
+            headers = re.findall(r'^#+\s+', synthesis, re.MULTILINE)
+            if headers:
+                header_levels = [len(h.strip()) for h in headers]
+                if len(set(header_levels)) > 2:  # Más de 2 niveles diferentes
+                    consistency_issues.append("Estructura de headers inconsistente")
+            
+            # Verificar consistencia de terminología
+            technical_terms = re.findall(r'\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*\b', synthesis)
+            if technical_terms:
+                term_frequency = {}
+                for term in technical_terms:
+                    term_frequency[term] = term_frequency.get(term, 0) + 1
+                
+                # Identificar términos que aparecen solo una vez (posible inconsistencia)
+                single_occurrence = [term for term, freq in term_frequency.items() if freq == 1]
+                if len(single_occurrence) > len(term_frequency) * 0.5:
+                    consistency_issues.append("Muchos términos técnicos aparecen solo una vez")
+            
+            # Calcular score de consistencia
+            consistency_score = max(0.0, 1.0 - (len(consistency_issues) * 0.2))
+            
+            return {
+                "score": consistency_score,
+                "issues": consistency_issues,
+                "total_issues": len(consistency_issues)
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error verificando consistencia interna: {e}")
+            return {
+                "score": 0.0,
+                "error": str(e)
+            }
+    
+    def _verify_factual_accuracy(self, synthesis: str, chunks: List[Any]) -> Dict[str, Any]:
+        """
+        Verifica la precisión factual de la respuesta.
+        
+        Args:
+            synthesis: Respuesta generada
+            chunks: Chunks utilizados para generar la respuesta
+        
+        Returns:
+            Dict con análisis de precisión factual
+        """
+        try:
+            factual_issues = []
+            
+            # Extraer afirmaciones factuales
+            factual_claims = self._extract_factual_claims(synthesis)
+            
+            # Verificar cada afirmación contra los chunks
+            verified_claims = 0
+            total_claims = len(factual_claims)
+            
+            for claim in factual_claims:
+                if self._verify_factual_claim(claim, chunks):
+                    verified_claims += 1
+                else:
+                    factual_issues.append(f"Afirmación no verificada: {claim[:100]}...")
+            
+            # Calcular score de precisión factual
+            if total_claims > 0:
+                factual_score = verified_claims / total_claims
+            else:
+                factual_score = 1.0
+            
+            return {
+                "score": factual_score,
+                "verified_claims": verified_claims,
+                "total_claims": total_claims,
+                "factual_issues": factual_issues,
+                "verification_rate": factual_score
+            }
+            
+        except Exception as e:
+            self.logger.error(f"Error verificando precisión factual: {e}")
+            return {
+                "score": 0.0,
+                "error": str(e)
+            }
+    
+    def _extract_mentioned_sources(self, synthesis: str) -> set:
+        """Extrae las fuentes mencionadas en la síntesis."""
+        sources = set()
+        
+        # Buscar citas en formato [Título](línea X-Y)
+        citation_pattern = r'\[([^\]]+)\]\(línea\s+\d+-\d+\)'
+        citations = re.findall(citation_pattern, synthesis)
+        sources.update(citations)
+        
+        # Buscar menciones de archivos
+        file_pattern = r'`([^`]+\.(?:md|py|js|ts|java|cpp|h))`'
+        files = re.findall(file_pattern, synthesis)
+        sources.update(files)
+        
+        # Buscar menciones de secciones
+        section_pattern = r'sección\s+["\']([^"\']+)["\']'
+        sections = re.findall(section_pattern, synthesis)
+        sources.update(sections)
+        
+        return sources
+    
+    def _extract_factual_claims(self, synthesis: str) -> List[str]:
+        """Extrae afirmaciones factuales de la síntesis."""
+        factual_patterns = [
+            r'([^.!?]*(?:es\s+\d+[^.!?]*[.!?])',  # "X es 123"
+            r'([^.!?]*(?:requiere\s+\d+[^.!?]*[.!?])',  # "X requiere 123"
+            r'([^.!?]*(?:tiene\s+\d+[^.!?]*[.!?])',  # "X tiene 123"
+            r'([^.!?]*(?:versión\s+\d+[^.!?]*[.!?])',  # "versión 1.2.3"
+            r'([^.!?]*(?:línea\s+\d+[^.!?]*[.!?])',  # "línea 45"
+        ]
+        
+        claims = []
+        for pattern in factual_patterns:
+            matches = re.findall(pattern, synthesis, re.IGNORECASE)
+            claims.extend(matches)
+        
+        return [claim.strip() for claim in claims if len(claim.strip()) > 10]
+    
+    def _verify_factual_claim(self, claim: str, chunks: List[Any]) -> bool:
+        """Verifica si una afirmación factual está respaldada por los chunks."""
+        try:
+            # Buscar números y valores específicos en la afirmación
+            numbers = re.findall(r'\d+(?:\.\d+)?', claim)
+            
+            if not numbers:
+                return True  # Sin números específicos, considerar verificada
+            
+            # Buscar estos números en los chunks
+            for chunk in chunks:
+                chunk_text = chunk.text if hasattr(chunk, 'text') else str(chunk)
+                for number in numbers:
+                    if number in chunk_text:
+                        return True
+            
+            return False
+            
+        except Exception:
+            return False
+    
+    def _calculate_contract_score(self, contract_compliance: Dict[str, Any]) -> float:
+        """Calcula el score de cumplimiento del contrato."""
+        try:
+            score = 0.0
+            
+            # Objetivo logrado
+            if contract_compliance.get("goal_achieved"):
+                score += 0.3
+            
+            # Formato cumplido
+            if contract_compliance.get("format_compliant"):
+                score += 0.2
+            
+            # Métricas respetadas
+            if contract_compliance.get("metrics_respected"):
+                score += 0.2
+            
+            # Requisitos cumplidos
+            requirements_met = len(contract_compliance.get("requirements_met", []))
+            requirements_total = len(contract_compliance.get("requirements_met", [])) + len(contract_compliance.get("requirements_missing", []))
+            if requirements_total > 0:
+                score += (requirements_met / requirements_total) * 0.3
+            
+            return score
+            
+        except Exception:
+            return 0.0
+    
+    def _generate_verification_recommendations(self, auto_check: Dict[str, Any], 
+                                            hallucination_check: Dict[str, Any],
+                                            contract_compliance: Dict[str, Any]) -> List[str]:
+        """Genera recomendaciones específicas para verificación."""
+        recommendations = []
+        
+        # Recomendaciones basadas en verificación automática
+        if auto_check.get("compliance_score", 0) < 0.8:
+            recommendations.append("Mejorar cumplimiento de requisitos básicos")
+        
+        if auto_check.get("violations"):
+            recommendations.append("Corregir violaciones críticas identificadas")
+        
+        # Recomendaciones basadas en detección de alucinaciones
+        if hallucination_check.get("confidence_score", 0) < 0.8:
+            recommendations.append("Revisar y validar afirmaciones no respaldadas")
+        
+        if hallucination_check.get("potential_hallucinations"):
+            recommendations.append("Eliminar o corregir alucinaciones detectadas")
+        
+        # Recomendaciones basadas en cumplimiento del contrato
+        if not contract_compliance.get("goal_achieved"):
+            recommendations.append("Asegurar que se cumpla el objetivo principal")
+        
+        if not contract_compliance.get("format_compliant"):
             recommendations.append("Ajustar formato según especificaciones del contrato")
         
         if contract_compliance.get("requirements_missing"):
