@@ -1,0 +1,42 @@
+query_type: "procedural"
+description: "Consultas que requieren pasos secuenciales y accionables"
+goal: "Proporcionar pasos claros y verificables para completar una tarea"
+
+requirements:
+  - "Usar solo pasajes recuperados y citarlos"
+  - "Limitar a 3-5 chunks relevantes"
+  - "Indicar suposiciones explícitas"
+  - "Incluir sección 'Fuentes' con título de doc y línea"
+  - "Proporcionar pasos secuenciales y verificables"
+
+output_format:
+  structure:
+    - "Resumen ejecutivo (2-3 líneas)"
+    - "Prerrequisitos (si aplica)"
+    - "Pasos numerados secuencialmente"
+    - "Consideraciones y advertencias"
+    - "Verificación de completado"
+    - "Fuentes citadas"
+
+  constraints:
+    max_tokens: 1000
+    steps_min: 3
+    steps_max: 10
+    include_prerequisites: true
+    include_verification: true
+
+metrics:
+  precision_target: 0.95
+  completeness_score: 0.9
+  actionability_score: 0.95
+
+examples:
+  - "¿Cómo configuro el entorno de desarrollo?"
+  - "¿Cuáles son los pasos para desplegar la aplicación?"
+  - "¿Cómo resuelvo este error paso a paso?"
+
+validation_rules:
+  - "Cada paso debe ser accionable y verificable"
+  - "Los pasos deben estar en orden lógico"
+  - "Debe incluir al menos una verificación"
+  - "Las fuentes deben ser específicas y relevantes"

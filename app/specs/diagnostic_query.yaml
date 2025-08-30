@@ -1,0 +1,43 @@
+query_type: "diagnostic"
+description: "Consultas que requieren análisis de problemas y soluciones"
+goal: "Identificar causa raíz y proporcionar soluciones basadas en evidencia"
+
+requirements:
+  - "Usar solo pasajes recuperados y citarlos"
+  - "Limitar a 3-5 chunks relevantes"
+  - "Indicar suposiciones explícitas"
+  - "Incluir sección 'Fuentes' con título de doc y línea"
+  - "Identificar causa raíz y posibles soluciones"
+  - "Incluir nivel de confianza en el diagnóstico"
+
+output_format:
+  structure:
+    - "Síntomas identificados"
+    - "Análisis de causa raíz"
+    - "Soluciones recomendadas (priorizadas)"
+    - "Nivel de confianza y limitaciones"
+    - "Prevención futura"
+    - "Fuentes citadas"
+
+  constraints:
+    max_tokens: 1200
+    confidence_threshold: 0.7
+    solutions_min: 2
+    include_prevention: true
+
+metrics:
+  precision_target: 0.9
+  diagnostic_accuracy: 0.85
+  solution_effectiveness: 0.8
+
+examples:
+  - "¿Por qué falla la autenticación?"
+  - "¿Cuál es la causa del error de conexión?"
+  - "¿Por qué la aplicación es lenta?"
+
+validation_rules:
+  - "Debe identificar síntomas específicos"
+  - "El análisis de causa debe ser lógico"
+  - "Las soluciones deben ser implementables"
+  - "El nivel de confianza debe ser justificado"
+  - "Debe incluir medidas preventivas"
