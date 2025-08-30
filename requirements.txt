@@ -38,6 +38,11 @@ aiohttp>=3.8.0
 # Dependencias para PR-D (Cursor Integration)
 aiofiles>=23.2.1
 
+# Dependencias para PR-E (Audit & Evaluation)
+pandas>=2.0.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
 # Desarrollo y testing
 pylint
 pytest>=7.4.0
