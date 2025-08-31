@@ -1,0 +1,267 @@
+# Configuración del Sistema de Aprendizaje Continuo - PR-F
+
+# Configuración general del aprendizaje
+learning:
+  enabled: true
+  learning_rate: 0.01
+  min_feedback_samples: 10
+  min_execution_samples: 20
+  learning_cycle_days: 7
+  auto_optimization: true
+  
+  # Umbrales para triggers de aprendizaje
+  triggers:
+    accuracy_drop_threshold: 0.05    # Reentrenar si accuracy baja 5%
+    satisfaction_drop_threshold: 0.3  # Optimizar si satisfaction baja 0.3 puntos
+    error_rate_threshold: 0.1         # Revisar si error rate > 10%
+    pattern_frequency_threshold: 3    # Mínimo 3 ocurrencias para considerar patrón
+
+# Configuración del clasificador ML
+classifier:
+  model_type: "random_forest"
+  n_estimators: 100
+  max_depth: 10
+  random_state: 42
+  class_weight: "balanced"
+  
+  # Features y sus pesos
+  feature_weights:
+    embeddings: 0.4          # Embeddings semánticos
+    keywords: 0.3            # Análisis de keywords
+    project_context: 0.2     # Contexto del proyecto
+    user_history: 0.1        # Historial del usuario
+  
+  # Configuración de reentrenamiento
+  retraining:
+    auto_retrain: true
+    min_new_samples: 50
+    retrain_frequency_days: 14
+    validation_split: 0.2
+    cross_validation_folds: 5
+
+# Configuración de templates adaptativos
+adaptive_templates:
+  adaptation_strength: 0.7    # Qué tanto adaptar (0.0-1.0)
+  max_adaptations_per_template: 5
+  
+  # Reglas de adaptación por tipo de proyecto
+  project_adaptations:
+    django_web:
+      risk_multipliers:
+        security: 1.5
+        database: 1.3
+        deployment: 1.2
+      additional_requirements:
+        - "Considerar migraciones de Django"
+        - "Verificar compatibilidad de versiones"
+        - "Incluir tests con Django TestCase"
+    
+    fastapi_api:
+      risk_multipliers:
+        api: 1.4
+        security: 1.3
+        performance: 1.2
+      additional_requirements:
+        - "Documentación OpenAPI obligatoria"
+        - "Validación Pydantic requerida"
+        - "Considerar rate limiting"
+    
+    microservices:
+      risk_multipliers:
+        deployment: 1.8
+        networking: 1.4
+        monitoring: 1.3
+      additional_requirements:
+        - "Evaluar impacto en otros servicios"
+        - "Implementar health checks"
+        - "Incluir distributed tracing"
+
+# Configuración del motor de riesgo avanzado
+risk_assessment:
+  enabled: true
+  
+  # Pesos de categorías de riesgo
+  category_weights:
+    technical: 0.4
+    business: 0.3
+    operational: 0.2
+    security: 0.1
+  
+  # Umbrales de riesgo
+  thresholds:
+    low: 0.3
+    medium: 0.6
+    high: 0.8
+    critical: 0.9
+  
+  # Factores de riesgo técnico
+  technical_factors:
+    critical_paths:
+      weight: 0.4
+      paths:
+        - "/auth/"
+        - "/security/"
+        - "/payments/"
+        - "/admin/"
+        - "/config/"
+        - "/migrations/"
+    
+    dangerous_patterns:
+      weight: 0.3
+      patterns:
+        - "DROP\\s+TABLE"
+        - "DELETE\\s+FROM"
+        - "rm\\s+-rf"
+        - "sudo\\s+"
+        - "eval\\s*\\("
+    
+    complexity_factors:
+      weight: 0.2
+      high_complexity_threshold: 0.8
+      very_high_complexity_threshold: 0.9
+    
+    dependency_factors:
+      weight: 0.1
+      max_safe_dependencies: 5
+      critical_dependencies:
+        - "security"
+        - "auth"
+        - "database"
+
+# Configuración de optimización de rendimiento
+performance:
+  enabled: true
+  
+  # Configuración de caching
+  caching:
+    enabled: true
+    max_cache_size: 1000
+    ttl_minutes: 60
+    cache_hit_rate_target: 0.8
+  
+  # Configuración de monitoring
+  monitoring:
+    track_execution_time: true
+    track_memory_usage: true
+    track_cpu_usage: false    # Deshabilitado por defecto
+    baseline_update_frequency: 100  # Cada 100 operaciones
+  
+  # Umbrales de performance
+  thresholds:
+    max_execution_time_seconds: 30
+    max_memory_usage_mb: 500
+    min_cache_hit_rate: 0.5
+  
+  # Optimizaciones automáticas
+  auto_optimizations:
+    caching: true
+    preprocessing: true
+    memory_optimization: true
+    parallel_processing: false  # Experimental
+
+# Configuración de feedback del usuario
+feedback:
+  collection_enabled: true
+  storage_path: "data/learning/feedback.jsonl"
+  
+  # Tipos de feedback a recopilar
+  feedback_types:
+    - "contract_quality"
+    - "task_relevance"
+    - "completion_success"
+    - "user_satisfaction"
+    - "template_usefulness"
+  
+  # Configuración de ratings
+  rating_scale:
+    min: 1.0
+    max: 5.0
+    default: 3.0
+  
+  # Triggers para solicitar feedback
+  feedback_triggers:
+    always_after_completion: true
+    after_low_quality_score: true
+    after_execution_failure: true
+    random_sampling_rate: 0.1  # 10% de ejecuciones exitosas
+
+# Configuración de insights y reportes
+insights:
+  enabled: true
+  
+  # Generación de insights
+  insight_generation:
+    min_pattern_frequency: 3
+    confidence_threshold: 0.7
+    impact_threshold: 0.2
+  
+  # Reportes automáticos
+  reports:
+    daily_summary: true
+    weekly_detailed: true
+    monthly_comprehensive: true
+    
+  # Métricas a trackear
+  metrics:
+    - "classification_accuracy"
+    - "template_adaptation_rate"
+    - "user_satisfaction"
+    - "execution_success_rate"
+    - "performance_trends"
+
+# Configuración de datos de entrenamiento
+training_data:
+  # Generación de datos sintéticos
+  synthetic_data:
+    enabled: true
+    samples_per_task_type: 100
+    noise_level: 0.1
+  
+  # Datos históricos
+  historical_data:
+    use_existing_logs: true
+    logs_path: "logs/"
+    min_confidence_score: 0.8
+  
+  # Validación de datos
+  validation:
+    train_test_split: 0.8
+    validation_split: 0.2
+    stratify_by_task_type: true
+    remove_outliers: true
+
+# Configuración de experimentación A/B
+ab_testing:
+  enabled: false  # Deshabilitado inicialmente
+  
+  # Configuración de experimentos
+  experiments:
+    traffic_split: 0.1  # 10% de tráfico para experimentos
+    min_sample_size: 100
+    max_experiment_duration_days: 30
+    
+  # Métricas para evaluar experimentos
+  success_metrics:
+    - "user_satisfaction"
+    - "task_completion_rate"
+    - "classification_accuracy"
+    - "execution_time"
+
+# Configuración de logging del aprendizaje
+logging:
+  level: "INFO"
+  log_file: "logs/learning_system.log"
+  
+  # Eventos a loggear
+  log_events:
+    - "model_training"
+    - "template_optimization"
+    - "pattern_detection"
+    - "performance_optimization"
+    - "feedback_processing"
+  
+  # Retención de logs
+  retention:
+    log_files_days: 90
+    metrics_data_days: 180
+    feedback_data_days: 365
