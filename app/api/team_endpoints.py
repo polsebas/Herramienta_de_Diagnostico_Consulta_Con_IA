@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from agents.team.TeamCoordinator import TeamCoordinator
+from agents.workflow.coordinate_flow import run_coordinate_flow
 
 
 logger = logging.getLogger("team")
@@ -62,4 +63,32 @@ async def get_team_status(session_id: str = Query(..., description="Identificado
         raise HTTPException(status_code=404, detail="Sesión no encontrada")
     return SessionStatusResponse(session_id=session_id, status=session["status"], steps=session.get("steps", []))
 
+
+class RunRequest(BaseModel):
+    session_id: str
+    context_override: Optional[Dict[str, Any]] = Field(default=None, description="Contexto para sobrescribir/merge")
+
+
+@app.post("/api/team/run", response_model=SessionStatusResponse)
+async def run_team_flow(payload: RunRequest) -> SessionStatusResponse:
+    session = SESSIONS.get(payload.session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail="Sesión no encontrada")
+
+    # Preparar contexto
+    context = dict(session.get("context", {}))
+    if payload.context_override:
+        context.update(payload.context_override)
+
+    SESSIONS[payload.session_id]["status"] = "running"
+
+    # Ejecutar flujo coordinate
+    result = await run_coordinate_flow(context)
+    steps = result.get("steps", [])
+    status = result.get("status", "completed")
+
+    SESSIONS[payload.session_id]["steps"] = steps
+    SESSIONS[payload.session_id]["status"] = status
+
+    return SessionStatusResponse(session_id=payload.session_id, status=status, steps=steps)
 
