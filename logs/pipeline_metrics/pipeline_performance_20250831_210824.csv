@@ -1,0 +1,10 @@
+Métrica,Valor,Descripción
+Total Queries,3,Total de consultas procesadas
+Successful Queries,3,Consultas exitosas
+Failed Queries,0,Consultas fallidas
+Success Rate,100.00%,Tasa de éxito
+Avg Execution Time,0.01s,Tiempo promedio de ejecución
+Avg Verification Score,0.00,Score promedio de verificación
+Avg Quality Score,0.40,Score promedio de calidad
+Avg Chunks Retrieved,1.0,Chunks promedio recuperados
+Avg Context Compression,0.00,Compresión promedio del contexto
