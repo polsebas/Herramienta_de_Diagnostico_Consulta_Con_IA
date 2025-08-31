@@ -87,7 +87,8 @@ class SpecLayer:
     def __init__(self, 
                  context_manager: ContextManager,
                  human_loop_manager: Optional[HumanLoopManager] = None,
-                 config_path: str = "config/spec_layer.yml"):
+                 config_path: str = "config/spec_layer.yml",
+                 advanced_contract_generator=None):
         """
         Inicializa el Spec Layer.
         
@@ -95,6 +96,7 @@ class SpecLayer:
             context_manager: Gestor de contexto para análisis histórico
             human_loop_manager: Gestor de human-in-the-loop (opcional)
             config_path: Ruta al archivo de configuración
+            advanced_contract_generator: Generador avanzado de contratos (PR-F)
         """
         self.context_manager = context_manager
         self.human_loop_manager = human_loop_manager
@@ -102,7 +104,10 @@ class SpecLayer:
         self.contract_templates = self._load_templates()
         self.active_contracts: Dict[str, TaskContract] = {}
         
-        logger.info("Spec Layer inicializado")
+        # PR-F: Sistema avanzado de contratos (opcional)
+        self.advanced_generator = advanced_contract_generator
+        
+        logger.info(f"Spec Layer inicializado {'con sistema avanzado' if advanced_contract_generator else 'en modo básico'}")
     
     def _load_config(self, config_path: str) -> Dict[str, Any]:
         """Carga configuración desde archivo YAML."""
@@ -233,6 +238,21 @@ class SpecLayer:
         Returns:
             TaskContract configurado
         """
+        # PR-F: Usar sistema avanzado si está disponible
+        if self.advanced_generator:
+            try:
+                return await self.advanced_generator.generate_advanced_contract(
+                    query=query,
+                    user_role=user_role,
+                    risk_level=risk_level,
+                    context_chunks=context_chunks,
+                    files_affected=files_affected
+                )
+            except Exception as e:
+                logger.warning(f"Error en sistema avanzado, usando fallback: {e}")
+                # Continuar con sistema básico
+        
+        # Sistema básico (fallback)
         # Detectar tipo de tarea
         task_type = self._detect_task_type(query)
         

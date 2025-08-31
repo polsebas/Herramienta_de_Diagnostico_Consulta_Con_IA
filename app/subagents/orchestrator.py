@@ -131,7 +131,8 @@ class SubagentOrchestrator:
             
             # 1. GENERAR CONTRATO DE TAREA
             logger.info("Paso 1: Generando contrato de tarea...")
-            contract = build_task_contract(query, user_role, risk_level)
+            # build_task_contract es async y espera RiskLevel o None; dejamos que infiera el riesgo
+            contract = await build_task_contract(query=query, user_role=user_role, risk_level=None)
             pipeline_result.contract = contract
             
             # 2. RETRIEVAL - Búsqueda híbrida
@@ -253,16 +254,31 @@ class SubagentOrchestrator:
             # Preparar chunks para análisis
             chunk_data = []
             for chunk in chunks:
+                # Soportar resultados como objetos o dicts
+                if isinstance(chunk, dict):
+                    cid = chunk.get("id", "")
+                    text = chunk.get("text", "")
+                    metadata = chunk.get("metadata", {})
+                    score = chunk.get("score", 0.0)
+                    source = chunk.get("source", "")
+                else:
+                    cid = getattr(chunk, "id", "")
+                    text = getattr(chunk, "text", "")
+                    metadata = getattr(chunk, "metadata", {})
+                    score = getattr(chunk, "score", 0.0)
+                    source = getattr(chunk, "source", "")
+
                 chunk_data.append({
-                    "id": chunk.id,
-                    "text": chunk.text,
-                    "metadata": chunk.metadata,
-                    "score": chunk.score,
-                    "source": chunk.source
+                    "id": cid,
+                    "text": text,
+                    "metadata": metadata,
+                    "score": score,
+                    "source": source
                 })
             
             # Ejecutar análisis
-            analysis = self.analysis_agent.analyze(chunk_data)
+            # Pasar la consulta (usamos el objetivo del contrato como representación)
+            analysis = self.analysis_agent.analyze(chunk_data, contract.goal)
             
             # Agregar información del contrato
             analysis["contract_requirements"] = {

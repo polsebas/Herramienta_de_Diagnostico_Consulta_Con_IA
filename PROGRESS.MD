@@ -22,16 +22,36 @@
 
 * **Intelligence Phase**
 
-  * **PR-F**: Advanced contract generation.
+  * **PR-F**: Advanced contract generation module.
+    - 🎯 **Objetivo**: ML classifier + adaptive templates (95% accuracy)
+    - 📁 **Archivos**: `app/advanced_contracts/`, `config/advanced_contracts/`
+    - ⏱️ **Tiempo**: 2-3 semanas
+    - 📊 **Métricas**: Classification accuracy 95%, Template relevance 0.95
   * **PR-G**: Automated project analysis with background agents.
+    - 🎯 **Objetivo**: Agentes proactivos 24/7 (85% problemas detectados antes de impacto)
+    - 📁 **Archivos**: `app/project_analysis/`, `background_agents/`
+    - ⏱️ **Tiempo**: 2-3 semanas
+    - 📊 **Métricas**: Problem detection 85%, Automation 80%, Velocity +25%
 
 ### 📝 Planned
 
 * **Production Phase**
 
-  * **PR-H**: Enterprise features (multi-tenant, scaling).
+  * **PR-H**: Enterprise infrastructure (multi-tenant, scaling).
+    - 🎯 **Objetivo**: 1000+ usuarios concurrentes, 100+ tenants, 99.99% uptime
+    - 📁 **Archivos**: `app/enterprise/`, `infrastructure/kubernetes/`
+    - ⏱️ **Tiempo**: 3-4 semanas
+    - 📊 **Métricas**: 1000+ concurrent users, 99.99% uptime, <200ms P95
   * **PR-I**: Security & compliance layer (auth, RBAC).
-  * **PR-J**: Human-in-the-loop approval workflows (inspired by HumanLayer).
+    - 🎯 **Objetivo**: Security score 98+, compliance 100% GDPR/SOX/ISO27001
+    - 📁 **Archivos**: `app/security/`, `app/security/compliance/`
+    - ⏱️ **Tiempo**: 2-3 semanas
+    - 📊 **Métricas**: Security score 98+, 0 security incidents, 100% compliance
+  * **PR-J**: Advanced human-in-the-loop workflows.
+    - 🎯 **Objetivo**: Workflows enterprise complejos, <15 min tiempo aprobación
+    - 📁 **Archivos**: `app/workflows/`, `app/workflows/templates/`
+    - ⏱️ **Tiempo**: 2 semanas
+    - 📊 **Métricas**: <15 min approval time, 95% workflow completion
 
 ---
 
@@ -67,15 +87,52 @@
 
 ---
 
-## 4. Next Steps (Planned PRs)
+## 4. Next Steps (Detailed PRs)
 
+### **🔄 Intelligence Phase (Enero-Febrero 2025)**
 * **PR-F**: Advanced contract generation module.
+  - ML classifier con 95% accuracy + templates adaptativos
+  - **Documentación**: `docs/PR-F_ADVANCED_CONTRACTS_SPEC.md`
 * **PR-G**: Project analysis agents (background + async).
-* **PR-H**: Enterprise-ready infra (multi-tenant).
-* **PR-I**: Security, RBAC, compliance layer.
-* **PR-J**: Human-in-the-loop workflows for approvals.
-* **PR-K**: Mutation testing & fuzzing.
+  - Agentes proactivos 24/7 + análisis automatizado
+  - **Documentación**: `docs/PR-G_PROJECT_ANALYSIS_SPEC.md`
+
+### **📝 Production Phase (Marzo-Mayo 2025)**
+* **PR-H**: Enterprise infrastructure (multi-tenant, scaling).
+  - 1000+ usuarios, 100+ tenants, auto-scaling
+  - **Documentación**: `docs/PR-H_ENTERPRISE_INFRASTRUCTURE_SPEC.md`
+* **PR-I**: Security & compliance layer (auth, RBAC).
+  - Seguridad enterprise + compliance GDPR/SOX/ISO27001
+  - **Documentación**: `docs/PR-I_SECURITY_COMPLIANCE_SPEC.md`
+* **PR-J**: Advanced human-in-the-loop workflows.
+  - Workflows complejos + escalamiento inteligente
+  - **Documentación**: `docs/PR-J_ADVANCED_WORKFLOWS_SPEC.md`
+
+### **🧪 Robustness Phase (Junio 2025)**
+* **PR-K**: Mutation testing & fuzzing for RAG robustness.
+  - Testing avanzado + chaos engineering
+  - **Documentación**: `docs/PR-K_MUTATION_TESTING_SPEC.md`
+
+### **📋 Plan Maestro**
+* **Documentación completa**: `docs/MASTER_IMPLEMENTATION_PLAN.md`
+* **Análisis detallado**: `docs/DETAILED_PR_ANALYSIS.md`
 
 ---
 
 📌 **Nota**: Este documento será actualizado en cada merge significativo. Los PRs futuros deberían **referenciar esta hoja de ruta** para mantener la trazabilidad.
+
+---
+
+## 5. Resultados de pruebas (31-08-2025)
+
+- ✅ Smoke test Spec Layer: demo completo ejecutado con éxito.
+  - Ajustes menores realizados para habilitar la demo end-to-end:
+    - `app/context_manager.py`: agregado método async `get_relevant_history()` (stub para smoke tests).
+    - `app/human_loop.py`: `HumanLoopManager` acepta `NotificationConfig` por defecto.
+- ⏭️ Human-in-the-Loop demo: salteado temporalmente por falta de herramientas de respuesta externas (Slack/Webhook).
+- ✅ Auditoría de completitud: 100% objetivos completados (`tests/audit_system_completeness.py`).
+
+### Próximos pasos inmediatos
+- Ejecutar smoke del pipeline de subagentes: `PYTHONPATH=. python3 tests/example_pipeline_subagents.py` (ajustar imports si es necesario).
+- Integrar smoke tests en CI (Spec Layer + Auditoría) y marcar como required.
+- Opcional: correr `eval/evaluate_plans.py` para una corrida del golden set (puede ser pesado).

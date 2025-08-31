@@ -1,0 +1,132 @@
+# Template adaptativo para tareas procedimentales en proyectos Django
+
+goal_template: "Proporcionar pasos claros específicos para Django: {query}"
+
+# Musts base + específicos de Django
+musts:
+  - "Usar solo información de fuentes verificadas y citarlas"
+  - "Incluir pasos numerados y secuenciales específicos para Django"
+  - "Mencionar comandos de Django management cuando sea relevante"
+  - "Considerar migraciones de base de datos si aplica"
+  - "Verificar compatibilidad con versión de Django del proyecto"
+  - "Incluir configuración en settings.py si es necesario"
+  - "Mencionar impacto en URLs y routing"
+  - "Incluir sección 'Fuentes' con referencias precisas"
+  - "Proporcionar ejemplos específicos de Django"
+
+format: |
+  Markdown con estructura específica para Django:
+  
+  ## Resumen
+  [Resumen de 2-3 líneas]
+  
+  ## Prerrequisitos Django
+  - Versión de Django requerida
+  - Apps de Django necesarias
+  - Configuraciones previas
+  
+  ## Pasos de Implementación
+  1. [Paso con comando Django específico]
+  2. [Configuración en settings.py]
+  3. [Creación/modificación de modelos]
+  4. [Migraciones si aplica]
+  5. [Configuración de URLs]
+  6. [Tests específicos de Django]
+  
+  ## Verificación
+  - Comandos para verificar implementación
+  - Tests a ejecutar
+  
+  ## Consideraciones Django
+  - Mejores prácticas específicas
+  - Posibles gotchas
+  
+  ## Fuentes
+  [Referencias con líneas específicas]
+
+# Métricas ajustadas para Django
+metrics:
+  clarity_score: 0.9
+  completeness_score: 0.85
+  actionability_score: 0.9
+  django_specificity_score: 0.8
+  max_tokens: 1200
+  steps_min: 4
+  steps_max: 12
+
+# Factores de riesgo específicos de Django
+risk_factors:
+  - "Modificación de modelos Django (requiere migración)"
+  - "Cambios en settings.py (puede afectar toda la aplicación)"
+  - "Modificación de middleware (impacto en todas las requests)"
+  - "Cambios en URLs principales (puede romper routing)"
+  - "Modificación de templates base (afecta UI completa)"
+  - "Cambios en configuración de base de datos"
+
+# Multiplicadores de riesgo para Django
+risk_multipliers:
+  security: 1.5      # Django tiene muchas implicaciones de seguridad
+  database: 1.3      # ORM y migraciones pueden ser complejas
+  deployment: 1.2    # Collectstatic, WSGI, etc.
+  performance: 1.1   # Query optimization, caching
+
+# Requerimientos de contexto específicos
+context_requirements:
+  min_sources: 2
+  max_sources: 6
+  require_django_docs: true
+  require_code_examples: true
+  require_migration_check: true
+  require_test_examples: true
+
+# Guidelines específicos del framework
+framework_guidelines:
+  - "Seguir convenciones de Django (PEP 8 + Django coding style)"
+  - "Usar Django ORM en lugar de SQL directo cuando sea posible"
+  - "Implementar vistas basadas en clases para funcionalidad compleja"
+  - "Usar forms de Django para validación de entrada"
+  - "Aplicar principio DRY (Don't Repeat Yourself) de Django"
+  - "Considerar internacionalización (i18n) si el proyecto la soporta"
+  - "Usar sistema de permisos de Django para control de acceso"
+  - "Implementar logging usando el sistema de Django"
+
+# Comandos Django comunes a mencionar cuando sea relevante
+django_commands:
+  - "python manage.py makemigrations"
+  - "python manage.py migrate"
+  - "python manage.py collectstatic"
+  - "python manage.py test"
+  - "python manage.py runserver"
+  - "python manage.py shell"
+  - "python manage.py createsuperuser"
+  - "python manage.py loaddata"
+
+# Archivos Django importantes a considerar
+important_files:
+  - "settings.py"
+  - "urls.py"
+  - "models.py"
+  - "views.py"
+  - "forms.py"
+  - "admin.py"
+  - "apps.py"
+  - "requirements.txt"
+  - "manage.py"
+
+# Patrones de testing específicos de Django
+testing_patterns:
+  - "Usar Django TestCase para tests de modelos"
+  - "Usar Client() para tests de vistas"
+  - "Implementar fixtures para datos de prueba"
+  - "Usar override_settings para tests de configuración"
+  - "Testear migraciones con TransactionTestCase"
+
+# Consideraciones de deployment específicas
+deployment_considerations:
+  - "Configurar ALLOWED_HOSTS para producción"
+  - "Usar variables de entorno para configuración sensible"
+  - "Configurar archivos estáticos (STATIC_ROOT, STATIC_URL)"
+  - "Configurar archivos de media si aplica"
+  - "Considerar uso de CDN para archivos estáticos"
+  - "Configurar logging para producción"
+  - "Usar HTTPS en producción (SECURE_SSL_REDIRECT)"

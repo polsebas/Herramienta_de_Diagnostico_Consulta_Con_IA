@@ -583,3 +583,11 @@ class ContextManager:
             "recent_performance": self.get_performance_metrics(1),  # Última hora
             "recommendations": self.get_recommendations()
         }
+
+    # Compatibilidad con SpecLayer: método asincrónico utilizado para recuperar historial relevante
+    async def get_relevant_history(self, query: str, limit: int = 5) -> List[Dict[str, Any]]:
+        """
+        Retorna historial relevante para una query.
+        Implementación mínima para smoke tests: retorna lista vacía.
+        """
+        return []

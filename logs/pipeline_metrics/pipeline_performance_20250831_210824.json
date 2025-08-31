@@ -1,0 +1,29 @@
+{
+  "export_timestamp": "2025-08-31T21:08:24.067824",
+  "performance": {
+    "total_queries": 3,
+    "successful_queries": 3,
+    "failed_queries": 0,
+    "avg_execution_time": 0.011979977289835611,
+    "avg_verification_score": 0.0,
+    "avg_quality_score": 0.4000000000000001,
+    "success_rate": 1.0,
+    "avg_chunks_retrieved": 1.0,
+    "avg_context_compression": 0.0,
+    "performance_trend": [
+      {
+        "hour": "2025-08-31T21:00:00",
+        "avg_quality_score": 0.4000000000000001,
+        "avg_execution_time": 0.011979977289835611,
+        "success_count": 3,
+        "total_queries": 3
+      }
+    ]
+  },
+  "alert_thresholds": {
+    "execution_time": 10.0,
+    "verification_score": 0.7,
+    "success_rate": 0.9,
+    "context_compression": 0.3
+  }
+}

@@ -1,0 +1,196 @@
+# Template adaptativo para generación de código en proyectos FastAPI
+
+goal_template: "Generar código FastAPI funcional y bien documentado para: {query}"
+
+# Musts específicos para FastAPI
+musts:
+  - "Incluir type hints en todas las funciones y parámetros"
+  - "Usar Pydantic models para validación de datos"
+  - "Incluir documentación automática OpenAPI/Swagger"
+  - "Implementar dependency injection cuando sea apropiado"
+  - "Seguir convenciones de FastAPI para endpoints"
+  - "Incluir manejo de errores con HTTPException"
+  - "Considerar autenticación y autorización si aplica"
+  - "Incluir ejemplos de uso en docstrings"
+  - "Mencionar dependencias necesarias"
+  - "Incluir sección 'Fuentes' con referencias"
+
+format: |
+  Código FastAPI con estructura específica:
+  
+  ## Implementación
+  
+  ### Dependencias Requeridas
+  ```bash
+  pip install fastapi uvicorn [otras_dependencias]
+  ```
+  
+  ### Modelos Pydantic
+  ```python
+  # Modelos de datos con validación
+  ```
+  
+  ### Endpoints FastAPI
+  ```python
+  # Implementación de endpoints con:
+  # - Type hints completos
+  # - Dependency injection
+  # - Documentación automática
+  # - Manejo de errores
+  ```
+  
+  ### Configuración
+  ```python
+  # Configuración de la aplicación FastAPI
+  ```
+  
+  ## Documentación API
+  - Swagger UI disponible en /docs
+  - ReDoc disponible en /redoc
+  
+  ## Testing
+  ```python
+  # Tests usando TestClient de FastAPI
+  ```
+  
+  ## Deployment
+  ```bash
+  # Comandos para deployment con uvicorn
+  ```
+  
+  ## Fuentes
+  [Referencias específicas]
+
+# Métricas ajustadas para FastAPI
+metrics:
+  code_quality: 0.9
+  api_design_score: 0.9
+  documentation_score: 0.85
+  type_safety_score: 0.9
+  performance_score: 0.8
+  max_tokens: 1800
+  complexity_score: 0.7
+
+# Factores de riesgo específicos de FastAPI
+risk_factors:
+  - "Endpoints que manejan datos sensibles"
+  - "Modificación de dependency providers"
+  - "Cambios en middleware de FastAPI"
+  - "Modificación de configuración CORS"
+  - "Cambios en sistema de autenticación"
+  - "Modificación de validadores Pydantic"
+  - "Endpoints que afectan performance"
+
+# Multiplicadores de riesgo para FastAPI
+risk_multipliers:
+  api: 1.4           # APIs tienen alto impacto
+  security: 1.3      # Autenticación y autorización críticas
+  performance: 1.2   # Performance es crucial en APIs
+  validation: 1.1    # Validación de datos importante
+
+# Requerimientos específicos de FastAPI
+context_requirements:
+  min_sources: 2
+  max_sources: 6
+  require_type_hints: true
+  require_pydantic_models: true
+  require_openapi_docs: true
+  require_tests: true
+  require_error_handling: true
+
+# Guidelines específicos de FastAPI
+framework_guidelines:
+  - "Usar async/await para operaciones I/O intensivas"
+  - "Implementar dependency injection para servicios compartidos"
+  - "Usar Pydantic BaseModel para todos los schemas de datos"
+  - "Implementar middleware personalizado usando Starlette"
+  - "Usar BackgroundTasks para operaciones asíncronas"
+  - "Implementar rate limiting con slowapi o similar"
+  - "Usar HTTPException para errores HTTP apropiados"
+  - "Configurar CORS apropiadamente para frontend"
+  - "Implementar logging estructurado"
+  - "Usar environment variables para configuración"
+
+# Patrones de código FastAPI recomendados
+code_patterns:
+  endpoint_structure: |
+    @app.post("/endpoint", response_model=ResponseModel)
+    async def endpoint_function(
+        data: RequestModel,
+        db: Session = Depends(get_db),
+        current_user: User = Depends(get_current_user)
+    ) -> ResponseModel:
+        """
+        Endpoint description.
+        
+        Args:
+            data: Request data description
+            db: Database session
+            current_user: Authenticated user
+            
+        Returns:
+            Response data description
+            
+        Raises:
+            HTTPException: When error occurs
+        """
+        try:
+            # Implementation
+            pass
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+  
+  pydantic_model: |
+    class ModelName(BaseModel):
+        """Model description."""
+        
+        field_name: str = Field(..., description="Field description")
+        optional_field: Optional[int] = Field(None, description="Optional field")
+        
+        class Config:
+            schema_extra = {
+                "example": {
+                    "field_name": "example_value",
+                    "optional_field": 123
+                }
+            }
+  
+  dependency_injection: |
+    async def get_service() -> ServiceClass:
+        """Dependency provider for service."""
+        return ServiceClass()
+    
+    @app.get("/endpoint")
+    async def endpoint(service: ServiceClass = Depends(get_service)):
+        return await service.do_something()
+
+# Testing patterns específicos
+testing_patterns:
+  - "Usar TestClient de FastAPI para tests de endpoints"
+  - "Implementar fixtures para dependencias mock"
+  - "Testear validación de Pydantic models"
+  - "Usar pytest-asyncio para tests asíncronos"
+  - "Implementar tests de integración con base de datos"
+  - "Testear autenticación y autorización"
+  - "Verificar documentación OpenAPI generada"
+
+# Consideraciones de performance
+performance_considerations:
+  - "Usar async/await para operaciones de base de datos"
+  - "Implementar connection pooling para DB"
+  - "Considerar caching con Redis para datos frecuentes"
+  - "Usar pagination para endpoints que retornan listas"
+  - "Implementar rate limiting para prevenir abuse"
+  - "Optimizar queries de base de datos"
+  - "Usar compression middleware para responses grandes"
+
+# Consideraciones de seguridad específicas
+security_considerations:
+  - "Validar todos los inputs con Pydantic"
+  - "Usar HTTPS en producción"
+  - "Implementar autenticación JWT o OAuth2"
+  - "Configurar CORS restrictivamente"
+  - "Sanitizar outputs para prevenir XSS"
+  - "Usar secrets management para API keys"
+  - "Implementar logging de seguridad"
+  - "Considerar rate limiting por usuario"
