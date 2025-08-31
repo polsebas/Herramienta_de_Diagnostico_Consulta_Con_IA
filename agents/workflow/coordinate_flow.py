@@ -35,7 +35,18 @@ async def run_coordinate_flow(initial_context: Dict[str, Any]) -> Dict[str, Any]
                 "approval_id": approval_id,
             }
 
-    result = await coordinator.coordinate(initial_context)
+    async def on_event(event: Dict[str, Any]) -> None:
+        # Hook para emitir eventos desde el flujo hacia la UI
+        try:
+            # Lazy import para evitar dependencia cíclica
+            from app.api.team_endpoints import publish_event
+
+            await publish_event("team", {"source": "coordinate_flow", **event})
+        except Exception:
+            # Evitar romper el flujo por errores de notificación
+            pass
+
+    result = await coordinator.coordinate(initial_context, on_event=on_event)
     result["status"] = "completed"
     return result
 

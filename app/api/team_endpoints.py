@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi import WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, Field
 
 from agents.team.TeamCoordinator import TeamCoordinator
@@ -35,6 +36,7 @@ class SessionStatusResponse(BaseModel):
 
 # Estado en memoria (placeholder). Para PR-R3 se migrará a storage adecuado.
 SESSIONS: Dict[str, Dict[str, Any]] = {}
+EVENT_SUBSCRIBERS: Dict[str, List[WebSocket]] = {"team": []}
 
 
 @app.post("/api/team/session", response_model=SessionCreateResponse)
@@ -91,4 +93,43 @@ async def run_team_flow(payload: RunRequest) -> SessionStatusResponse:
     SESSIONS[payload.session_id]["status"] = status
 
     return SessionStatusResponse(session_id=payload.session_id, status=status, steps=steps)
+
+
+async def publish_event(channel: str, event: Dict[str, Any]) -> None:
+    # Persistir en audit.jsonl
+    try:
+        import json, os
+        os.makedirs("logs", exist_ok=True)
+        with open("logs/audit.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps({"channel": channel, **event}) + "\n")
+    except Exception as e:
+        logger.error("Error escribiendo audit log: %s", e)
+
+    # Emitir a suscriptores WebSocket
+    stale: List[WebSocket] = []
+    for ws in EVENT_SUBSCRIBERS.get(channel, []):
+        try:
+            await ws.send_json(event)
+        except Exception:
+            stale.append(ws)
+    for ws in stale:
+        try:
+            EVENT_SUBSCRIBERS[channel].remove(ws)
+        except ValueError:
+            pass
+
+
+@app.websocket("/ws/team/events")
+async def team_events_ws(websocket: WebSocket) -> None:
+    await websocket.accept()
+    EVENT_SUBSCRIBERS.setdefault("team", []).append(websocket)
+    try:
+        while True:
+            # Mantener viva la conexión; ignoramos mensajes entrantes
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        try:
+            EVENT_SUBSCRIBERS["team"].remove(websocket)
+        except ValueError:
+            pass
 

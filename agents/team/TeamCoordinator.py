@@ -38,18 +38,24 @@ class TeamCoordinator:
         print(f"[TeamCoordinator] Registrando rol: {role_name}")
         self.roles.append(role)
 
-    async def coordinate(self, context: Dict[str, Any]) -> Dict[str, Any]:
+    async def coordinate(self, context: Dict[str, Any], on_event=None) -> Dict[str, Any]:
         state: Dict[str, Any] = {"context": context, "steps": []}
         for role in self.roles:
+            role_name = getattr(role, "name", role.__class__.__name__)
             step_in = state["context"]
-            print(f"[TeamCoordinator] Ejecutando act() de {getattr(role, 'name', role.__class__.__name__)}")
+            if on_event:
+                await on_event({"type": "role_start", "role": role_name})
+            print(f"[TeamCoordinator] Ejecutando act() de {role_name}")
             output = await role.act(step_in)
-            state["steps"].append(
-                {"role": getattr(role, "name", role.__class__.__name__), "output": output}
-            )
+            step_record = {"role": role_name, "output": output}
+            state["steps"].append(step_record)
+            if on_event:
+                await on_event({"type": "role_end", "role": role_name, "output": output})
             handoff_target = await role.handoff()
             if handoff_target is not None:
                 state["handoff"] = handoff_target
+                if on_event:
+                    await on_event({"type": "handoff", "from": role_name, "to": handoff_target})
         return state
 
 
