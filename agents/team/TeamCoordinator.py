@@ -33,12 +33,16 @@ class TeamCoordinator:
         self.roles: List[AgentRole] = roles or []
 
     def register_role(self, role: AgentRole) -> None:
+        # Logging simple para trazabilidad inicial
+        role_name = getattr(role, "name", role.__class__.__name__)
+        print(f"[TeamCoordinator] Registrando rol: {role_name}")
         self.roles.append(role)
 
     async def coordinate(self, context: Dict[str, Any]) -> Dict[str, Any]:
         state: Dict[str, Any] = {"context": context, "steps": []}
         for role in self.roles:
             step_in = state["context"]
+            print(f"[TeamCoordinator] Ejecutando act() de {getattr(role, 'name', role.__class__.__name__)}")
             output = await role.act(step_in)
             state["steps"].append(
                 {"role": getattr(role, "name", role.__class__.__name__), "output": output}
