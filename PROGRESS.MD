@@ -1,10 +1,3 @@
-Perfecto 🚀.
-La idea sería **reorganizar `progress.md`** para que no quede como un simple checklist, sino como un **documento vivo de gestión de proyecto**, donde cada fase se conecta con los **PRs cerrados** y los **PRs planificados**. Además, incluiríamos métricas y CI como evidencia objetiva del progreso.
-
-Aquí te propongo la **estructura y plan de PRs** para `progress.md`:
-
----
-
 # 📌 Project Progress Report
 
 **Updated: August 31, 2025**
