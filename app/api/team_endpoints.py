@@ -3,9 +3,11 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
+from time import time
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi import WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from agents.team.TeamCoordinator import TeamCoordinator
@@ -16,6 +18,15 @@ logger = logging.getLogger("team")
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="Agno Team Coordinator API")
+
+# CORS para Agent UI
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class SessionCreateRequest(BaseModel):
@@ -53,6 +64,8 @@ async def create_team_session(payload: SessionCreateRequest) -> SessionCreateRes
         "status": "initialized",
         "context": payload.context,
         "steps": [],
+        "created_at": int(time()),
+        "title": f"Team session {session_id[:8]}",
     }
 
     return SessionCreateResponse(session_id=session_id, status="initialized")
@@ -93,6 +106,69 @@ async def run_team_flow(payload: RunRequest) -> SessionStatusResponse:
     SESSIONS[payload.session_id]["status"] = status
 
     return SessionStatusResponse(session_id=payload.session_id, status=status, steps=steps)
+
+# --- Agent UI Adapter: Playground-compatible endpoints ---
+
+@app.get("/v1/playground/status")
+async def playground_status() -> Dict[str, Any]:
+    return {"status": "ok", "sessions": len(SESSIONS)}
+
+
+@app.get("/v1/playground/teams")
+async def playground_teams() -> List[Dict[str, Any]]:
+    # Un único team descriptor mínimo
+    return [
+        {
+            "team_id": "team_default",
+            "name": "Agno Team",
+            "description": "Coordinated multi-agent team",
+            "model": {"provider": "custom"},
+            "storage": False,
+        }
+    ]
+
+
+@app.get("/v1/playground/teams/{team_id}/sessions")
+async def playground_team_sessions(team_id: str) -> List[Dict[str, Any]]:
+    # Mapear nuestras SESSIONS a SessionEntry esperado por Agent UI
+    entries: List[Dict[str, Any]] = []
+    for sid, s in SESSIONS.items():
+        entries.append(
+            {
+                "session_id": sid,
+                "title": s.get("title", sid[:8]),
+                "created_at": s.get("created_at", int(time())),
+            }
+        )
+    return entries
+
+
+@app.get("/v1/playground/teams/{team_id}/sessions/{session_id}")
+async def playground_team_session(team_id: str, session_id: str) -> Dict[str, Any]:
+    s = SESSIONS.get(session_id)
+    if not s:
+        raise HTTPException(status_code=404, detail="Session not found")
+    # Transformar a estructura esperada
+    runs = [
+        {
+            "message": {
+                "role": "user",
+                "content": "Run coordinate flow",
+                "created_at": s.get("created_at", int(time())),
+            },
+            "response": {
+                "content": str(s.get("steps", [])),
+                "created_at": int(time()),
+            },
+        }
+    ] if s.get("steps") else []
+    return {
+        "session_id": session_id,
+        "team_id": team_id,
+        "user_id": None,
+        "memory": {"runs": runs},
+        "team_data": {},
+    }
 
 
 async def publish_event(channel: str, event: Dict[str, Any]) -> None:
