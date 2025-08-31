@@ -120,3 +120,19 @@
 ---
 
 📌 **Nota**: Este documento será actualizado en cada merge significativo. Los PRs futuros deberían **referenciar esta hoja de ruta** para mantener la trazabilidad.
+
+---
+
+## 5. Resultados de pruebas (31-08-2025)
+
+- ✅ Smoke test Spec Layer: demo completo ejecutado con éxito.
+  - Ajustes menores realizados para habilitar la demo end-to-end:
+    - `app/context_manager.py`: agregado método async `get_relevant_history()` (stub para smoke tests).
+    - `app/human_loop.py`: `HumanLoopManager` acepta `NotificationConfig` por defecto.
+- ⏭️ Human-in-the-Loop demo: salteado temporalmente por falta de herramientas de respuesta externas (Slack/Webhook).
+- ✅ Auditoría de completitud: 100% objetivos completados (`tests/audit_system_completeness.py`).
+
+### Próximos pasos inmediatos
+- Ejecutar smoke del pipeline de subagentes: `PYTHONPATH=. python3 tests/example_pipeline_subagents.py` (ajustar imports si es necesario).
+- Integrar smoke tests en CI (Spec Layer + Auditoría) y marcar como required.
+- Opcional: correr `eval/evaluate_plans.py` para una corrida del golden set (puede ser pesado).

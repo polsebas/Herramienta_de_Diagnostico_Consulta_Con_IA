@@ -17,14 +17,18 @@ import sys
 from datetime import datetime, timedelta
 import numpy as np
 
-# Agregar el directorio app al path
-sys.path.append(str(Path(__file__).parent / "app"))
+# Asegurar que el proyecto raíz esté en el path para importar paquete `app`
+project_root = Path(__file__).resolve().parents[1]
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
-from subagents.orchestrator import SubagentOrchestrator, PipelineConfig
-from context_manager import ContextManager
-from context_logger import ContextLogger
-from pipeline_metrics import PipelineMetricsManager
-from retrieval import HybridRetriever, MilvusConfig, MilvusVectorStore, BM25Index
+from app.subagents.orchestrator import SubagentOrchestrator, PipelineConfig
+from app.context_manager import ContextManager
+from app.context_logger import ContextLogger
+from app.pipeline_metrics import PipelineMetricsManager
+from app.retrieval.hybrid import HybridRetriever
+from app.retrieval.milvus_store import MilvusConfig, MilvusVectorStore
+from app.retrieval.bm25_index import BM25Index
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

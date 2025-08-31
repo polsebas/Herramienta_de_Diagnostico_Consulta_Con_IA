@@ -77,14 +77,15 @@ class NotificationConfig:
 class HumanLoopManager:
     """Gestor principal del sistema Human-in-the-Loop."""
     
-    def __init__(self, config: NotificationConfig):
+    def __init__(self, config: NotificationConfig = None):
         """
         Inicializa el gestor de Human-in-the-Loop.
         
         Args:
             config: Configuración de notificaciones
         """
-        self.config = config
+        # Permitir inicialización sin configuración explícita para demos/smoke tests
+        self.config = config or NotificationConfig()
         self.pending_approvals: Dict[str, ApprovalRequest] = {}
         self.approval_callbacks: Dict[str, Callable] = {}
         self.notification_handlers = self._setup_notification_handlers()
