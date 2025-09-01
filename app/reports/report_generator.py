@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional
 def generate_main_report(
     overview: Dict[str, Any],
     history: Optional[Dict[str, Any]] = None,
-    output_dir: str = "/workspace/reports",
+    output_dir: str = str(Path(__file__).resolve().parents[2] / "reports"),
 ) -> str:
     """Genera un main_report.md mínimo combinando overview + history.
 

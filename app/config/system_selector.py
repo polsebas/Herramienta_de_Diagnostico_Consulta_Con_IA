@@ -6,7 +6,8 @@ from pathlib import Path
 from typing import Dict, Optional
 
 
-CONFIG_DIR = Path("/workspace/config")
+REPO_ROOT = Path(__file__).resolve().parents[2]
+CONFIG_DIR = REPO_ROOT / "config"
 CONFIG_FILE = CONFIG_DIR / "system.json"
 
 

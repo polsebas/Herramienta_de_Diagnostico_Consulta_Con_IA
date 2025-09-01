@@ -17,7 +17,7 @@ class RoadmapAgent:
         items.append({"title": "Mejorar cobertura de docs", "priority": "medium"})
         return items
 
-    def commit_roadmap(self, items: List[Dict[str, Any]], output_dir: str = "/workspace/reports") -> str:
+    def commit_roadmap(self, items: List[Dict[str, Any]], output_dir: str = str(Path(__file__).resolve().parents[2] / "reports")) -> str:
         out = Path(output_dir)
         out.mkdir(parents=True, exist_ok=True)
         target = out / "roadmap.md"

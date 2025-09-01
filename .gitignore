@@ -1,2 +1,8 @@
 /.github
 /.venv
+### Next.js build artifacts
+**/.next/
+
+### Agent UI local environment files
+agent-ui/.env.local
+agent-ui/next-env.d.ts

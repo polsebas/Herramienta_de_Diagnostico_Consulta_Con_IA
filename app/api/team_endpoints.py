@@ -18,6 +18,8 @@ from app.config.system_selector import (
     select_source_folder,
     initialize_config_if_missing,
 )
+from app.analysis.preflight import run_preflight
+from app.analysis.analysis_runner import run_system_analysis
 
 
 logger = logging.getLogger("team")
@@ -75,11 +77,14 @@ async def create_team_session(payload: SessionCreateRequest) -> SessionCreateRes
     for role_name in payload.roles:
         logger.info("Asignando rol declarado a la sesión %s: %s", session_id, role_name)
 
+    # Preflight al inicio de sesión
+    preflight = run_preflight()
+
     SESSIONS[session_id] = {
         "coordinator": coordinator,
-        "status": "initialized",
+        "status": "initialized" if preflight.get("ready_for_analysis") else "needs_configuration",
         "context": payload.context,
-        "steps": [],
+        "steps": [{"type": "preflight", "result": preflight}],
         "created_at": int(time()),
         "title": f"Team session {session_id[:8]}",
     }
@@ -149,7 +154,39 @@ async def set_system_config_endpoint(payload: SystemConfigRequest) -> SystemConf
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# Preflight endpoint
+@app.get("/api/system/preflight")
+async def system_preflight() -> Dict[str, Any]:
+    try:
+        return run_preflight()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # --- Agent UI Adapter: Playground-compatible endpoints ---
+
+# --- Analysis endpoints (PR-S2 minimal) ---
+@app.post("/api/analyze/run")
+async def analyze_run() -> Dict[str, Any]:
+    try:
+        result = run_system_analysis()
+        return {"status": "completed", "result": result}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/analyze/progress")
+async def analyze_progress() -> Dict[str, Any]:
+    # Placeholder de progreso: en PR-S2.1 se hará streaming y estado incremental
+    try:
+        from pathlib import Path
+        import json
+        f = Path(__file__).resolve().parents[2] / "reports" / "system_overview.json"
+        if f.exists():
+            return {"status": "completed", "result": json.loads(f.read_text(encoding="utf-8"))}
+        return {"status": "idle"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/v1/playground/status")
 async def playground_status() -> Dict[str, Any]:

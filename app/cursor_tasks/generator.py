@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 
-def generate_cursor_tasks(roadmap_md_path: str, output_dir: str = "/workspace/cursor_tasks") -> List[str]:
+def generate_cursor_tasks(roadmap_md_path: str, output_dir: str = str(Path(__file__).resolve().parents[2] / "cursor_tasks")) -> List[str]:
     """Convierte roadmap.md en tareas .md mínimas para Cursor.
 
     Heurística: cada item de lista genera un T####-*.md.
