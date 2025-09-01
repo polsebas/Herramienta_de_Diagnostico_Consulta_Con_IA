@@ -267,6 +267,8 @@ notes:
 ## 🔌 API (backend) — resumen
 
 * `POST /api/session`
+* `GET /api/system/config` | `POST /api/system/config`
+* `GET /api/system/preflight`
 * `POST /api/sources/select` | `GET /api/sources/status`
 * `POST /api/analyze/run` | `GET /api/analyze/progress`
 * `POST /api/docs/generate`
@@ -281,6 +283,10 @@ Todos los endpoints emiten eventos compatibles con **AG-UI** para progreso/estad
 ## 🧪 QA rápida (guiada por el MANUAL)
 
 * **Flujo simple**: seleccionar fuentes → analizar → ver informe → aceptar roadmap → exportar tareas Cursor.
+* **Preflight al iniciar sesión** (chat):
+  - Backend ejecuta `GET /api/system/preflight` internamente al crear sesión.
+  - Si faltan rutas (`source_folder`, `docs_folder`) → status `needs_configuration` y se guía al usuario en UI.
+  - Si todo ok → status `initialized` y se habilita "Analizar".
 * **Mensajes claros** en UI, resultados visibles y acciones siguientes sugeridas.
 * **Historial**: auditoría de cada acción (aprobaciones/cambios).
 
