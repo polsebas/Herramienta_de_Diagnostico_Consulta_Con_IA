@@ -6,3 +6,7 @@
 ### Agent UI local environment files
 agent-ui/.env.local
 agent-ui/next-env.d.ts
+
+### Generated reports
+reports/*.md
+reports/*.json
