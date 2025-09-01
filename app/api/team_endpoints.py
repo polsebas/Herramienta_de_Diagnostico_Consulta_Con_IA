@@ -6,8 +6,9 @@ from uuid import uuid4
 from time import time
 
 from fastapi import FastAPI, HTTPException, Query
-from fastapi import WebSocket, WebSocketDisconnect
+from fastapi import WebSocket, WebSocketDisconnect, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from agents.team.TeamCoordinator import TeamCoordinator
@@ -169,6 +170,80 @@ async def playground_team_session(team_id: str, session_id: str) -> Dict[str, An
         "memory": {"runs": runs},
         "team_data": {},
     }
+
+
+@app.post("/v1/playground/teams/{team_id}/runs")
+async def playground_team_run(team_id: str, request: Request):
+    """Endpoint de ejecución con streaming compatible con Agent UI.
+    Soporta FormData o JSON. Emite objetos JSON concatenados (sin delimitadores) para parsing incremental.
+    """
+    created_ts = int(time())
+
+    # Leer payload flexible (FormData o JSON)
+    try:
+        content_type = request.headers.get("content-type", "")
+        if content_type.startswith("application/json"):
+            payload = await request.json()
+        else:
+            form = await request.form()
+            payload = {k: form.get(k) for k in form.keys()}
+    except Exception:
+        payload = {}
+
+    session_id = (payload.get("session_id") or "").strip()
+    # Crear sesión si no existe
+    if not session_id or session_id not in SESSIONS:
+        session_id = str(uuid4())
+        SESSIONS[session_id] = {
+            "coordinator": TeamCoordinator(roles=[]),
+            "status": "initialized",
+            "context": {},
+            "steps": [],
+            "created_at": created_ts,
+            "title": f"Team session {session_id[:8]}",
+        }
+
+    async def event_stream():
+        # RunStarted
+        started = {
+            "event": "TeamRunStarted",
+            "session_id": session_id,
+            "created_at": created_ts,
+        }
+        yield json_dump(started)
+
+        # Ejecutar flujo y streamear pasos
+        result = await run_coordinate_flow(SESSIONS[session_id].get("context", {}))
+        steps = result.get("steps", [])
+        SESSIONS[session_id]["steps"] = steps
+        SESSIONS[session_id]["status"] = result.get("status", "completed")
+
+        # Emitir contenido por cada step
+        for step in steps:
+            content_obj = {
+                "event": "TeamRunResponseContent",
+                "session_id": session_id,
+                "created_at": int(time()),
+                "content_type": "text/plain",
+                "content": f"{step.get('role')}: {step.get('output')}",
+            }
+            yield json_dump(content_obj)
+
+        # RunCompleted
+        completed = {
+            "event": "TeamRunCompleted",
+            "session_id": session_id,
+            "created_at": int(time()),
+        }
+        yield json_dump(completed)
+
+    return StreamingResponse(event_stream(), media_type="application/json")
+
+
+def json_dump(obj: Dict[str, Any]) -> str:
+    import json
+
+    return json.dumps(obj, ensure_ascii=False)
 
 
 async def publish_event(channel: str, event: Dict[str, Any]) -> None:
