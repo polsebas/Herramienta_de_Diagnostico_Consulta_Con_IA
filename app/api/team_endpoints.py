@@ -12,6 +12,12 @@ from pydantic import BaseModel, Field
 
 from agents.team.TeamCoordinator import TeamCoordinator
 from agents.workflow.coordinate_flow import run_coordinate_flow
+from app.config.system_selector import (
+    get_system_config,
+    select_docs_folder,
+    select_source_folder,
+    initialize_config_if_missing,
+)
 
 
 logger = logging.getLogger("team")
@@ -43,6 +49,16 @@ class SessionStatusResponse(BaseModel):
     session_id: str
     status: str
     steps: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+class SystemConfigRequest(BaseModel):
+    source_folder: Optional[str] = Field(default=None, description="Ruta al código fuente")
+    docs_folder: Optional[str] = Field(default=None, description="Ruta a la carpeta de documentación")
+
+
+class SystemConfigResponse(BaseModel):
+    source_folder: Optional[str] = None
+    docs_folder: Optional[str] = None
 
 
 # Estado en memoria (placeholder). Para PR-R3 se migrará a storage adecuado.
@@ -106,6 +122,32 @@ async def run_team_flow(payload: RunRequest) -> SessionStatusResponse:
     SESSIONS[payload.session_id]["status"] = status
 
     return SessionStatusResponse(session_id=payload.session_id, status=status, steps=steps)
+
+# --- System Config Endpoints (PR-S1) ---
+
+@app.get("/api/system/config", response_model=SystemConfigResponse)
+async def get_system_config_endpoint() -> SystemConfigResponse:
+    try:
+        cfg = initialize_config_if_missing()
+        return SystemConfigResponse(**cfg)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/system/config", response_model=SystemConfigResponse)
+async def set_system_config_endpoint(payload: SystemConfigRequest) -> SystemConfigResponse:
+    try:
+        cfg = initialize_config_if_missing()
+        # Actualizar campos provistos
+        if payload.source_folder is not None:
+            cfg = select_source_folder(payload.source_folder)
+        if payload.docs_folder is not None:
+            cfg = select_docs_folder(payload.docs_folder)
+        return SystemConfigResponse(**cfg)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # --- Agent UI Adapter: Playground-compatible endpoints ---
 
