@@ -13,6 +13,14 @@ from pydantic import BaseModel, Field
 
 from agents.team.TeamCoordinator import TeamCoordinator
 from agents.workflow.coordinate_flow import run_coordinate_flow
+from app.config.system_selector import (
+    get_system_config,
+    select_docs_folder,
+    select_source_folder,
+    initialize_config_if_missing,
+)
+from app.analysis.preflight import run_preflight
+from app.analysis.analysis_runner import run_system_analysis
 
 
 logger = logging.getLogger("team")
@@ -46,6 +54,16 @@ class SessionStatusResponse(BaseModel):
     steps: List[Dict[str, Any]] = Field(default_factory=list)
 
 
+class SystemConfigRequest(BaseModel):
+    source_folder: Optional[str] = Field(default=None, description="Ruta al código fuente")
+    docs_folder: Optional[str] = Field(default=None, description="Ruta a la carpeta de documentación")
+
+
+class SystemConfigResponse(BaseModel):
+    source_folder: Optional[str] = None
+    docs_folder: Optional[str] = None
+
+
 # Estado en memoria (placeholder). Para PR-R3 se migrará a storage adecuado.
 SESSIONS: Dict[str, Dict[str, Any]] = {}
 EVENT_SUBSCRIBERS: Dict[str, List[WebSocket]] = {"team": []}
@@ -60,11 +78,14 @@ async def create_team_session(payload: SessionCreateRequest) -> SessionCreateRes
     for role_name in payload.roles:
         logger.info("Asignando rol declarado a la sesión %s: %s", session_id, role_name)
 
+    # Preflight al inicio de sesión
+    preflight = run_preflight()
+
     SESSIONS[session_id] = {
         "coordinator": coordinator,
-        "status": "initialized",
+        "status": "initialized" if preflight.get("ready_for_analysis") else "needs_configuration",
         "context": payload.context,
-        "steps": [],
+        "steps": [{"type": "preflight", "result": preflight}],
         "created_at": int(time()),
         "title": f"Team session {session_id[:8]}",
     }
@@ -108,7 +129,65 @@ async def run_team_flow(payload: RunRequest) -> SessionStatusResponse:
 
     return SessionStatusResponse(session_id=payload.session_id, status=status, steps=steps)
 
+# --- System Config Endpoints (PR-S1) ---
+
+@app.get("/api/system/config", response_model=SystemConfigResponse)
+async def get_system_config_endpoint() -> SystemConfigResponse:
+    try:
+        cfg = initialize_config_if_missing()
+        return SystemConfigResponse(**cfg)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/system/config", response_model=SystemConfigResponse)
+async def set_system_config_endpoint(payload: SystemConfigRequest) -> SystemConfigResponse:
+    try:
+        cfg = initialize_config_if_missing()
+        # Actualizar campos provistos
+        if payload.source_folder is not None:
+            cfg = select_source_folder(payload.source_folder)
+        if payload.docs_folder is not None:
+            cfg = select_docs_folder(payload.docs_folder)
+        return SystemConfigResponse(**cfg)
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Preflight endpoint
+@app.get("/api/system/preflight")
+async def system_preflight() -> Dict[str, Any]:
+    try:
+        return run_preflight()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # --- Agent UI Adapter: Playground-compatible endpoints ---
+
+# --- Analysis endpoints (PR-S2 minimal) ---
+@app.post("/api/analyze/run")
+async def analyze_run() -> Dict[str, Any]:
+    try:
+        result = run_system_analysis()
+        return {"status": "completed", "result": result}
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/analyze/progress")
+async def analyze_progress() -> Dict[str, Any]:
+    # Placeholder de progreso: en PR-S2.1 se hará streaming y estado incremental
+    try:
+        from pathlib import Path
+        import json
+        f = Path(__file__).resolve().parents[2] / "reports" / "system_overview.json"
+        if f.exists():
+            return {"status": "completed", "result": json.loads(f.read_text(encoding="utf-8"))}
+        return {"status": "idle"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/v1/playground/status")
 async def playground_status() -> Dict[str, Any]:
