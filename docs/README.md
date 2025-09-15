@@ -133,7 +133,7 @@ Este directorio contiene toda la documentación detallada del sistema **Next Lev
 
 - **🏠 [Documentación Principal](../README.md)**
 - **🇪🇸 [Documentación en Español](../LEAME.md)**
-- **📋 [Plan de Progreso](../PROGRESS.MD)**
+- **📋 [Plan de Progreso](PROGRESS.md)**
 - **🧪 [Tests y Ejemplos](../tests/)**
 - **⚙️ [Configuración](../config/)**
 - **📊 [Evaluación](../eval/)**

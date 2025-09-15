@@ -153,7 +153,6 @@ Herramienta_de_Diagnostico_Consulta_Con_IA/
 ├── 📁 knowledge_base/               # Knowledge base files
 ├── README.md                        # Main project documentation (English)
 ├── LEAME.md                         # Main project documentation (Spanish)
-├── PROGRESS.MD                      # Project progress & roadmap
 ├── requirements.txt                 # Python dependencies
 └── setup.py                         # Project setup & installation
 ```
@@ -399,19 +398,15 @@ python example_pipeline_subagents.py
 
 ## 📚 Documentation
 
-### **Detailed PR Documentation**
+### **Documentation**
 
-- [PR-1: Spec Layer Implementation](README_PR1.md)
-- [PR-2: Context Manager & Logging](README_PR2.md)
-- [PR-3: Hybrid Retrieval System](README_PR3.md)
-- [PR-4: Subagent Pipeline](README_PR4.md)
-- [PR-A: GitHub Indexing](README_PR-A.md)
-- [PR-B: Human-in-the-Loop](README_PR-B.md)
+- Full docs index: [`docs/README.md`](docs/README.md)
+- Progress and roadmap: [`docs/PROGRESS.md`](docs/PROGRESS.md)
 
 ### **Architecture Documentation**
 
-- [Next Level Plan](README_NEXT_LEVEL.md)
-- [Progress Tracking](PROGRESS.MD)
+- [Next Level Plan](docs/README_NEXT_LEVEL.md)
+- [Progress Tracking](docs/PROGRESS.md)
 
 ## 🐛 Troubleshooting
 
