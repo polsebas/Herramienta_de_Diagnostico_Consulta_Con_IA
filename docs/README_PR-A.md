@@ -1,6 +1,6 @@
 # 🚀 PR-A: Indexación de GitHub + Milvus
 
-Este documento describe la implementación del **PR-A** del plan de implementación detallado en `PROGRESS.MD`. Este PR implementa la **Semana 1** del plan: **Infra e Indexación**.
+Este documento describe la implementación del **PR-A** del plan de implementación detallado en [`docs/PROGRESS.md`](PROGRESS.md). Este PR implementa la **Semana 1** del plan: **Infra e Indexación**.
 
 ## 🎯 Objetivos del PR-A
 
