@@ -9,4 +9,4 @@ agent-ui/next-env.d.ts
 
 ### Generated reports
 reports/*.md
-reports/*.json
+reports/*.jsonagent-ui/node_modules/
