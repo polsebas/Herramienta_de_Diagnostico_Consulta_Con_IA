@@ -6,71 +6,23 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Desarrollo%20Activo-orange.svg)]()
 
+¿Preferís inglés? Leé la documentación en inglés: [README.md](README.md)
+
 ## 🌟 Descripción General
 
 Este proyecto representa una evolución de **Siguiente Nivel** desde un sistema RAG simple hacia un **agente semi-autónomo de gestión de proyectos** con capacidades human-in-the-loop, inspirado en las mejores prácticas de HumanLayer y Context Engineering.
 
 El sistema proporciona consultas inteligentes, análisis automatizado de proyectos y supervisión humana para decisiones críticas, siendo perfecto para equipos de desarrollo, gestores de proyectos y consultores técnicos.
 
-## 🎯 Características Principales
+## 🎯 Capacidades Principales
 
-### ✅ **Características Implementadas (PRs 1-4 + A-B)**
-
-#### **PR-1: Arquitectura Spec-First**
-- **Contratos de Tarea**: Plantillas YAML/Markdown para diferentes tipos de consulta
-- **Generación Dinámica de Contratos**: Construcción automática basada en contexto de consulta
-- **Renderizado de Prompts del Sistema**: Conversión de contratos a prompts estructurados
-- **Detección de Tipos de Consulta**: Clasificación automática (procedimental, diagnóstico, decisión, código)
-
-#### **PR-2: Gestión Avanzada de Contexto**
-- **Compactación Inteligente de Contexto**: Resumen de diálogo potenciado por LLM
-- **Optimización de Uso de Tokens**: Cálculo dinámico de presupuesto de contexto (<40% ventana del modelo)
-- **Logging Avanzado**: Métricas en tiempo real, alertas y monitoreo de rendimiento
-- **Dashboard Streamlit**: Visualización interactiva de métricas y tendencias de contexto
-
-#### **PR-3: Sistema de Recuperación Híbrido**
-- **Búsqueda Vector + BM25**: Combina búsqueda semántica y por palabras clave para recall óptimo
-- **Integración Milvus**: Base de datos vectorial de alto rendimiento con metadatos ricos
-- **Reranking Inteligente**: Scoring multi-factor (relevancia, calidad, frescura, metadatos)
-- **Esquema de Metadatos Fuerte**: Indexación completa de chunks con seguimiento preciso de fuentes
-
-#### **PR-4: Pipeline Completo de Subagentes**
-- **Orquestador**: Coordina todos los subagentes en secuencia inteligente
-- **Verificación Avanzada**: Verificaciones de calidad multi-factor con detección de alucinaciones
-- **Métricas Integradas**: Seguimiento del rendimiento del pipeline con Context Manager
-- **Fallback Robusto**: Manejo de errores y mecanismos de recuperación
-
-#### **PR-A: Integración e Indexación de GitHub**
-- **Indexación Automática de PRs/Issues**: Conecta con GitHub API e indexa metadatos
-- **Almacenamiento Vectorial**: Almacena metadatos enriquecidos en Milvus para búsqueda semántica
-- **Captura de Contexto Rico**: Información completa sobre cambios en el repositorio
-- **Métricas de Rendimiento**: Tasas de éxito de indexación y seguimiento de rendimiento
-
-#### **PR-B: Sistema Human-in-the-Loop**
-- **Flujos de Aprobación**: Gestión completa del ciclo de vida para decisiones humanas
-- **Notificaciones Multi-Canal**: Soporte para Slack, GitHub, Email y Webhook
-- **Evaluación de Riesgo**: Detección automática de acciones críticas que requieren aprobación
-- **Procesamiento Asíncrono**: Manejo de aprobaciones en background con timeouts
-
-### 🚧 **Características Próximas (PRs C-E)**
-
-#### **PR-C: Spec Layer + Contratos (Semana 2)**
-- **Integración con Agent**: Hook en Agent para generación automática de contratos
-- **Contexto de GitHub**: Integración con PRs e issues indexados
-- **Validación Automática**: Verificación de cumplimiento de contratos
-- **Contratos Inteligentes**: Generación de contratos consciente del contexto
-
-#### **PR-D: Integración con Cursor (Semana 3)**
-- **Agentes en Background**: Agentes tipo Cursor para tareas seguras en background
-- **Generación de Draft PRs**: Creación automatizada de pull requests
-- **Tests y Documentación**: Generación automática de tests y documentación
-- **Compactación de Contexto**: Gestión avanzada de contexto para tareas en background
-
-#### **PR-E: Auditoría y Evaluación (Semana 4)**
-- **Logging Comprehensivo**: Trazabilidad completa de todas las decisiones
-- **Evaluación Golden Set**: 20 preguntas doradas para evaluación de calidad
-- **Métricas de Rendimiento**: Evaluación continua y mejora
-- **Aseguramiento de Calidad**: Verificaciones de calidad automatizadas y recomendaciones
+- Especificación inteligente de tareas: contratos y prompts estructurados desde lenguaje natural
+- Gestión avanzada de contexto: resumen, control de presupuesto, logging y dashboard
+- Recuperación híbrida: vectores semánticos + BM25 con reranking y metadatos ricos
+- Pipeline de subagentes: análisis, síntesis y verificación con orquestación
+- Human-in-the-loop: aprobaciones, detección de riesgo, notificaciones, manejo asíncrono
+- Integración con GitHub: indexación de PRs/Issues para contexto de proyecto
+- Métricas y auditabilidad de punta a punta
 
 ## 🏗️ Arquitectura
 
@@ -125,16 +77,8 @@ Herramienta_de_Diagnostico_Consulta_Con_IA/
 │   ├── README.md                    # Índice de documentación
 │   ├── MANUAL_USUARIO.md            # Manual de Usuario (Español)
 │   ├── USER_MANUAL.md               # Manual de Usuario (Inglés)
-│   ├── README_PR1.md                # PR-1: Arquitectura Spec-First
-│   ├── README_PR2.md                # PR-2: Gestión de Contexto
-│   ├── README_PR3.md                # PR-3: Recuperación Híbrida
-│   ├── README_PR4.md                # PR-4: Pipeline de Subagentes
-│   ├── README_PR-A.md               # PR-A: Integración con GitHub
-│   ├── README_PR-B.md               # PR-B: Human-in-the-Loop
-│   ├── README_PR-C.md               # PR-C: Integración del Spec Layer
-│   ├── README_PR-D.md               # PR-D: Integración con Cursor
-│   ├── README_PR-E.md               # PR-E: Auditoría y Evaluación
-│   └── README_NEXT_LEVEL.md         # Plan original de evolución
+│   ├── README_NEXT_LEVEL.md         # Arquitectura y plan de evolución
+│   └── PROGRESS.md                  # Progreso y roadmap
 ├── 📁 tests/                        # Tests, ejemplos y auditorías
 │   ├── README.md                    # Documentación de tests
 │   ├── audit_system_completeness.py # Auditoría de completitud del sistema
@@ -261,7 +205,7 @@ python example_human_loop.py
 - **Recall de Recuperación**: +20% con búsqueda híbrida + reranking
 - **Tiempo de Respuesta Humana**: <1 hora promedio para aprobaciones
 
-### **Métricas Objetivo (PR-E)**
+### **Métricas Objetivo**
 
 - **Precisión del Plan**: ≥90% precisión en golden set
 - **Tasa de Automatización**: ≥70% subtareas sin intervención humana
@@ -306,12 +250,7 @@ python example_pipeline_subagents.py
 
 ### **Cobertura de Tests**
 
-- ✅ **PR-1**: Spec Layer y generación de contratos
-- ✅ **PR-2**: Context Manager y logging
-- ✅ **PR-3**: Sistema de recuperación híbrido
-- ✅ **PR-4**: Pipeline de subagentes y verificación
-- ✅ **PR-A**: Indexación e integración de GitHub
-- ✅ **PR-B**: Sistema Human-in-the-Loop
+- Ver la carpeta `tests/` y scripts de ejemplo para demos y chequeos ejecutables
 
 ## 📁 Estructura del Proyecto
 
@@ -345,31 +284,9 @@ python example_pipeline_subagents.py
 └── docs/                         # Documentación
 ```
 
-## 🔄 Roadmap de Desarrollo
+## 🔄 Roadmap
 
-### **Fase 1: Fundación (Completada)**
-- ✅ Arquitectura Spec-First
-- ✅ Gestión avanzada de contexto
-- ✅ Sistema de recuperación híbrido
-- ✅ Pipeline de subagentes
-
-### **Fase 2: Integración (En Progreso)**
-- ✅ Indexación e integración de GitHub
-- ✅ Sistema Human-in-the-Loop
-- 🔄 Integración Spec Layer + Contratos
-- 🔄 Integración con Cursor
-
-### **Fase 3: Inteligencia (Planificada)**
-- 🔄 Generación avanzada de contratos
-- 🔄 Análisis automatizado de proyectos
-- 🔄 Planificación inteligente de acciones
-- 🔄 Aprendizaje continuo
-
-### **Fase 4: Producción (Futuro)**
-- 🔄 Características empresariales
-- 🔄 Seguridad avanzada
-- 🔄 Optimización de rendimiento
-- 🔄 Mejoras de escalabilidad
+El progreso y roadmap se mantiene en: [`docs/PROGRESS.md`](docs/PROGRESS.md)
 
 ## 🤝 Contribución
 

@@ -6,71 +6,23 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Active%20Development-orange.svg)]()
 
+Prefer Spanish? Read the documentation in Spanish: [LEAME.md](LEAME.md)
+
 ## 🌟 Overview
 
 This project represents a **Next Level** evolution from a simple RAG system to a **semi-autonomous project management agent** with human-in-the-loop capabilities, inspired by HumanLayer practices and Context Engineering.
 
 The system provides intelligent consultation, automated project analysis, and human oversight for critical decisions, making it perfect for development teams, project managers, and technical consultants.
 
-## 🎯 Key Features
+## 🎯 Key Capabilities
 
-### ✅ **Implemented Features (PRs 1-4 + A-B)**
-
-#### **PR-1: Spec-First Architecture**
-- **Task Contracts**: YAML/Markdown templates for different query types
-- **Dynamic Contract Generation**: Automatic contract building based on query context
-- **System Prompt Rendering**: Conversion of contracts to structured system prompts
-- **Query Type Detection**: Automatic classification (procedural, diagnostic, decision, code)
-
-#### **PR-2: Advanced Context Management**
-- **Intelligent Context Compaction**: LLM-powered dialog summarization
-- **Token Usage Optimization**: Dynamic context budget calculation (<40% model window)
-- **Advanced Logging**: Real-time metrics, alerts, and performance monitoring
-- **Streamlit Dashboard**: Interactive visualization of context metrics and trends
-
-#### **PR-3: Hybrid Retrieval System**
-- **Vector + BM25 Search**: Combines semantic and keyword search for optimal recall
-- **Milvus Integration**: High-performance vector database with rich metadata
-- **Intelligent Reranking**: Multi-factor scoring (relevance, quality, freshness, metadata)
-- **Strong Metadata Schema**: Comprehensive chunk indexing with precise source tracking
-
-#### **PR-4: Complete Subagent Pipeline**
-- **Orchestrator**: Coordinates all subagents in intelligent sequence
-- **Advanced Verification**: Multi-factor quality checks with hallucination detection
-- **Integrated Metrics**: Pipeline performance tracking with Context Manager
-- **Robust Fallback**: Error handling and recovery mechanisms
-
-#### **PR-A: GitHub Integration & Indexing**
-- **Automatic PR/Issue Indexing**: Connect with GitHub API and index metadata
-- **Vector Storage**: Store enriched metadata in Milvus for semantic search
-- **Rich Context Capture**: Complete information about repository changes
-- **Performance Metrics**: Indexing success rates and performance tracking
-
-#### **PR-B: Human-in-the-Loop System**
-- **Approval Workflows**: Complete lifecycle management for human decisions
-- **Multi-Channel Notifications**: Slack, GitHub, Email, and Webhook support
-- **Risk Assessment**: Automatic detection of critical actions requiring approval
-- **Asynchronous Processing**: Background approval handling with timeouts
-
-### 🚧 **Upcoming Features (PRs C-E)**
-
-#### **PR-C: Spec Layer + Contracts (Week 2)**
-- **Agent Integration**: Hook in Agent for automatic contract generation
-- **GitHub Context**: Integration with indexed PRs and issues
-- **Automatic Validation**: Contract compliance verification
-- **Intelligent Contracts**: Context-aware contract generation
-
-#### **PR-D: Cursor Integration (Week 3)**
-- **Background Agents**: Cursor-like agents for safe background tasks
-- **Draft PR Generation**: Automated pull request creation
-- **Test & Documentation**: Automatic generation of tests and docs
-- **Context Compaction**: Advanced context management for background tasks
-
-#### **PR-E: Audit & Evaluation (Week 4)**
-- **Comprehensive Logging**: Complete audit trail for all decisions
-- **Golden Set Evaluation**: 20 golden questions for quality assessment
-- **Performance Metrics**: Continuous evaluation and improvement
-- **Quality Assurance**: Automated quality checks and recommendations
+- Intelligent task specification: contracts and structured prompts from natural queries
+- Advanced context management: summarization, budget control, logging and dashboard
+- Hybrid retrieval: semantic vectors + BM25 with reranking and rich metadata
+- Subagent pipeline: analysis, synthesis, verification with orchestrated flow
+- Human-in-the-loop: approval gates, risk detection, notifications, async handling
+- GitHub integration: PR/Issue indexing for enriched project context
+- Metrics and auditability end-to-end
 
 ## 🏗️ Architecture
 
@@ -125,16 +77,8 @@ Herramienta_de_Diagnostico_Consulta_Con_IA/
 │   ├── README.md                    # Documentation index
 │   ├── MANUAL_USUARIO.md            # User Manual (Spanish)
 │   ├── USER_MANUAL.md               # User Manual (English)
-│   ├── README_PR1.md                # PR-1: Spec-First Architecture
-│   ├── README_PR2.md                # PR-2: Context Management
-│   ├── README_PR3.md                # PR-3: Hybrid Retrieval
-│   ├── README_PR4.md                # PR-4: Subagent Pipeline
-│   ├── README_PR-A.md               # PR-A: GitHub Integration
-│   ├── README_PR-B.md               # PR-B: Human-in-the-Loop
-│   ├── README_PR-C.md               # PR-C: Spec Layer Integration
-│   ├── README_PR-D.md               # PR-D: Cursor Integration
-│   ├── README_PR-E.md               # PR-E: Audit & Evaluation
-│   └── README_NEXT_LEVEL.md         # Original evolution plan
+│   ├── README_NEXT_LEVEL.md         # Architecture & evolution plan
+│   └── PROGRESS.md                  # Progress & roadmap
 ├── 📁 tests/                        # Tests, examples & audits
 │   ├── README.md                    # Tests documentation
 │   ├── audit_system_completeness.py # System completeness audit
@@ -261,7 +205,7 @@ python example_human_loop.py
 - **Retrieval Recall**: +20% with hybrid search + reranking
 - **Human Response Time**: <1 hour average for approvals
 
-### **Target Metrics (PR-E)**
+### **Target Metrics**
 
 - **Plan Precision**: ≥90% accuracy on golden set
 - **Automation Rate**: ≥70% subtasks without human intervention
@@ -306,12 +250,7 @@ python example_pipeline_subagents.py
 
 ### **Test Coverage**
 
-- ✅ **PR-1**: Spec Layer and contract generation
-- ✅ **PR-2**: Context Manager and logging
-- ✅ **PR-3**: Hybrid retrieval system
-- ✅ **PR-4**: Subagent pipeline and verification
-- ✅ **PR-A**: GitHub indexing and integration
-- ✅ **PR-B**: Human-in-the-Loop system
+- See `tests/` folder and example scripts for runnable demos and checks
 
 ## 📁 Project Structure
 
@@ -345,31 +284,9 @@ python example_pipeline_subagents.py
 └── docs/                         # Documentation
 ```
 
-## 🔄 Development Roadmap
+## 🔄 Roadmap
 
-### **Phase 1: Foundation (Completed)**
-- ✅ Spec-First architecture
-- ✅ Advanced context management
-- ✅ Hybrid retrieval system
-- ✅ Subagent pipeline
-
-### **Phase 2: Integration (In Progress)**
-- ✅ GitHub indexing and integration
-- ✅ Human-in-the-Loop system
-- 🔄 Spec Layer + Contracts integration
-- 🔄 Cursor integration
-
-### **Phase 3: Intelligence (Planned)**
-- 🔄 Advanced contract generation
-- 🔄 Automated project analysis
-- 🔄 Intelligent action planning
-- 🔄 Continuous learning
-
-### **Phase 4: Production (Future)**
-- 🔄 Enterprise features
-- 🔄 Advanced security
-- 🔄 Performance optimization
-- 🔄 Scalability improvements
+Progress and roadmap are maintained in: [`docs/PROGRESS.md`](docs/PROGRESS.md)
 
 ## 🤝 Contributing
 
