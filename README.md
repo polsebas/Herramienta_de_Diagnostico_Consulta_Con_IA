@@ -1,18 +1,23 @@
-# 🚀 AI-Powered Project Management & Consultation Tool
+# AI-Powered Project Management & Consultation Tool
 
-**Next Level RAG System with Human-in-the-Loop Architecture**
+> **ARCHIVED (August 2026)** — This project is no longer under active development.  
+> Read the closeout note: **[ARCHIVE.md](ARCHIVE.md)** · Español: **[CIERRE.md](CIERRE.md)**
+
+**Historical prototype:** Next Level RAG + human-in-the-loop (spike 2025)
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Active%20Development-orange.svg)]()
+[![Status](https://img.shields.io/badge/Status-Archived-lightgrey.svg)]()
 
 Prefer Spanish? Read the documentation in Spanish: [LEAME.md](LEAME.md)
 
-## 🌟 Overview
+## Overview
 
-This project represents a **Next Level** evolution from a simple RAG system to a **semi-autonomous project management agent** with human-in-the-loop capabilities, inspired by HumanLayer practices and Context Engineering.
+> The sections below describe the **historical design** of this spike. They are kept for reference and are not a claim of production readiness.
 
-The system provides intelligent consultation, automated project analysis, and human oversight for critical decisions, making it perfect for development teams, project managers, and technical consultants.
+This project explored an evolution from a simple RAG system toward a semi-autonomous project-management agent with human-in-the-loop capabilities, inspired by HumanLayer practices and Context Engineering.
+
+It was an experiment in intelligent consultation, automated project analysis, and human oversight for critical decisions. **Development stopped in 2025; the repo was formally archived in August 2026** because modern coding agents (e.g. Cursor) already cover most of the intended day-to-day value.
 
 ## 🎯 Key Capabilities
 
@@ -284,97 +289,36 @@ python example_pipeline_subagents.py
 └── docs/                         # Documentation
 ```
 
-## 🔄 Roadmap
+## Roadmap
 
-Progress and roadmap are maintained in: [`docs/PROGRESS.md`](docs/PROGRESS.md)
+**Frozen.** Historical progress notes: [`docs/PROGRESS.md`](docs/PROGRESS.md).  
+Closeout and archival rationale: [`ARCHIVE.md`](ARCHIVE.md).
 
-## 🤝 Contributing
+## Contributing
 
-### **Development Workflow**
+This repository is **archived**. No new features or contributions are accepted. See [ARCHIVE.md](ARCHIVE.md).
 
-1. **Fork** the repository
-2. **Create** feature branch from `main`
-3. **Implement** changes with tests
-4. **Submit** pull request with detailed description
-5. **Code review** and merge
+## Documentation
 
-### **Code Standards**
+- Closeout: [`ARCHIVE.md`](ARCHIVE.md) / [`CIERRE.md`](CIERRE.md)
+- Historical docs index: [`docs/README.md`](docs/README.md)
+- Historical progress: [`docs/PROGRESS.md`](docs/PROGRESS.md)
 
-- **Type Hints**: All methods must have complete types
-- **Docstrings**: Google format documentation
-- **Error Handling**: Robust exception handling
-- **Tests**: Minimum 80% coverage
-- **Logging**: Comprehensive logging for debugging
-
-### **PR Guidelines**
-
-- **Clear Description**: What, why, and how
-- **Tests Included**: Unit and integration tests
-- **Documentation**: Update relevant READMEs
-- **Performance**: No regression in metrics
-
-## 📚 Documentation
-
-### **Documentation**
-
-- Full docs index: [`docs/README.md`](docs/README.md)
-- Progress and roadmap: [`docs/PROGRESS.md`](docs/PROGRESS.md)
-
-### **Architecture Documentation**
-
-- [Next Level Plan](docs/README_NEXT_LEVEL.md)
-- [Progress Tracking](docs/PROGRESS.md)
-
-## 🐛 Troubleshooting
-
-### **Common Issues**
-
-**GitHub Indexing Errors:**
-```bash
-# Check token
-echo $GITHUB_TOKEN
-
-# Verify Milvus connection
-docker ps | grep milvus
-```
-
-**Human Loop Notifications:**
-```bash
-# Check webhook configuration
-cat config/human_loop.yml
-
-# Verify environment variables
-env | grep SLACK
-```
-
-**Context Manager Issues:**
-```bash
-# Check logs
-tail -f logs/context_stats.jsonl
-
-# Verify dashboard
-streamlit run app/dashboard_context.py
-```
-
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **HumanLayer**: Inspiration for human-in-the-loop architecture
 - **Context Engineering**: Best practices for context management
-- **Milvus**: High-performance vector database
-- **OpenAI**: Advanced language models for context understanding
+- **Milvus**: Vector database used in the spike
+- **Coding agents (Cursor et al.)**: Ecosystem that absorbed most of the original use case
 
-## 📞 Support
+## Support
 
-- **Issues**: [GitHub Issues](https://github.com/polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA/discussions)
-- **Wiki**: [Project Wiki](https://github.com/polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA/wiki)
+Archived project — no active support. New issues should be closed as out of scope.
 
 ---
 
-**🚀 Ready to take your project management to the Next Level?**
-
-This system combines the power of AI with human oversight, providing intelligent automation while maintaining control over critical decisions. Perfect for teams that want to scale their capabilities without sacrificing quality or security. 
+**Archived (August 2026).** See [ARCHIVE.md](ARCHIVE.md) for learnings and what (if anything) is worth reusing elsewhere. 

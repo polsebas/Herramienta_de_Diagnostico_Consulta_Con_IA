@@ -2,8 +2,8 @@
 
 Este documento fue movido a `docs/PROGRESS.md`.
 
-Por favor consultá la versión actualizada del progreso y roadmap en:
+**Estado actual:** proyecto **archivado** (agosto 2026). Ver:
 
-- docs/PROGRESS.md
-
-La documentación detallada por PRs y especificaciones se encuentra en el directorio `docs/`.
+- [CIERRE.md](CIERRE.md)
+- [ARCHIVE.md](ARCHIVE.md)
+- [docs/PROGRESS.md](docs/PROGRESS.md)

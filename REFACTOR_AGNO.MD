@@ -1,7 +1,10 @@
 # Project Progress Report — Agno Team Coordinate Refactor
+
+> **Archived (2026-08-12).** This refactor plan is frozen/cancelled. See [ARCHIVE.md](ARCHIVE.md).
+
 **Repo:** polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA  
-**Framework:** Agno (Teams · Coordinate mode)  
-**Updated:** 31 Aug 2025
+**Framework:** Agno (Teams · Coordinate mode) — historical spike note  
+**Updated:** 31 Aug 2025 (historical)
 
 ---
 

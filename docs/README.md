@@ -1,12 +1,15 @@
-# 📚 Documentación del Sistema Next Level RAG
+# Documentación del Sistema Next Level RAG
 
-**Herramienta de Diagnóstico y Consulta con IA - Documentación Completa**
+> **Archivado (agosto 2026).** Este índice es histórico.  
+> Cierre del proyecto: [CIERRE.md](../CIERRE.md) · [ARCHIVE.md](../ARCHIVE.md) · progreso: [PROGRESS.md](PROGRESS.md)
+
+**Herramienta de Diagnóstico y Consulta con IA — documentación del spike 2025**
 
 ---
 
-## 🎯 **Descripción General**
+## Descripción general
 
-Este directorio contiene toda la documentación detallada del sistema **Next Level RAG con Human-in-the-Loop**, organizada por Pull Request y funcionalidad implementada.
+Este directorio contiene la documentación detallada del experimento **Next Level RAG con Human-in-the-Loop**, organizada por Pull Request. **No hay roadmap vigente**; los estados “completado / planeado” de abajo reflejan la narrativa de 2025, no un compromiso de mantenimiento.
 
 ---
 
