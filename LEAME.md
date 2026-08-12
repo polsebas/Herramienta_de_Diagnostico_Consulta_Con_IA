@@ -1,18 +1,23 @@
-# 🚀 Herramienta de Gestión de Proyectos y Consulta con IA
+# Herramienta de Gestión de Proyectos y Consulta con IA
 
-**Sistema RAG de Siguiente Nivel con Arquitectura Human-in-the-Loop**
+> **ARCHIVADO (agosto 2026)** — Este proyecto ya no tiene desarrollo activo.  
+> Nota de cierre: **[CIERRE.md](CIERRE.md)** · English: **[ARCHIVE.md](ARCHIVE.md)**
+
+**Prototipo histórico:** RAG de siguiente nivel + human-in-the-loop (spike 2025)
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Desarrollo%20Activo-orange.svg)]()
+[![Status](https://img.shields.io/badge/Status-Archivado-lightgrey.svg)]()
 
 ¿Preferís inglés? Leé la documentación en inglés: [README.md](README.md)
 
-## 🌟 Descripción General
+## Descripción general
 
-Este proyecto representa una evolución de **Siguiente Nivel** desde un sistema RAG simple hacia un **agente semi-autónomo de gestión de proyectos** con capacidades human-in-the-loop, inspirado en las mejores prácticas de HumanLayer y Context Engineering.
+> Las secciones de abajo describen el **diseño histórico** de este spike. Quedan como referencia; no afirman readiness de producción.
 
-El sistema proporciona consultas inteligentes, análisis automatizado de proyectos y supervisión humana para decisiones críticas, siendo perfecto para equipos de desarrollo, gestores de proyectos y consultores técnicos.
+Este proyecto exploró una evolución desde un sistema RAG simple hacia un agente semi-autónomo de gestión de proyectos con human-in-the-loop, inspirado en prácticas de HumanLayer y Context Engineering.
+
+Fue un experimento de consulta inteligente, análisis de proyectos y supervisión humana en decisiones críticas. **El desarrollo se detuvo en 2025; el repo se archivó formalmente en agosto 2026**, porque los agentes de coding modernos (p.ej. Cursor) ya cubren gran parte del valor cotidiano que se buscaba.
 
 ## 🎯 Capacidades Principales
 
@@ -284,97 +289,36 @@ python example_pipeline_subagents.py
 └── docs/                         # Documentación
 ```
 
-## 🔄 Roadmap
+## Roadmap
 
-El progreso y roadmap se mantiene en: [`docs/PROGRESS.md`](docs/PROGRESS.md)
+**Congelado.** Notas históricas: [`docs/PROGRESS.md`](docs/PROGRESS.md).  
+Cierre y motivos de archivo: [`CIERRE.md`](CIERRE.md).
 
-## 🤝 Contribución
+## Contribución
 
-### **Flujo de Desarrollo**
+Este repositorio está **archivado**. No se aceptan contribuciones ni PRs de features nuevas. Ver [CIERRE.md](CIERRE.md).
 
-1. **Fork** el repositorio
-2. **Crea** rama de feature desde `main`
-3. **Implementa** cambios con tests
-4. **Envía** pull request con descripción detallada
-5. **Code review** y merge
+## Documentación
 
-### **Estándares de Código**
+- Nota de cierre: [`CIERRE.md`](CIERRE.md) / [`ARCHIVE.md`](ARCHIVE.md)
+- Índice histórico: [`docs/README.md`](docs/README.md)
+- Progreso histórico: [`docs/PROGRESS.md`](docs/PROGRESS.md)
 
-- **Type Hints**: Todos los métodos deben tener tipos completos
-- **Docstrings**: Documentación en formato Google
-- **Error Handling**: Manejo robusto de excepciones
-- **Tests**: Mínimo 80% de cobertura
-- **Logging**: Logging comprehensivo para debugging
-
-### **Guías para PRs**
-
-- **Descripción Clara**: Qué, por qué y cómo
-- **Tests Incluidos**: Tests unitarios e integración
-- **Documentación**: Actualizar READMEs relevantes
-- **Rendimiento**: Sin regresión en métricas
-
-## 📚 Documentación
-
-### **Documentación**
-
-- Índice completo: [`docs/README.md`](docs/README.md)
-- Progreso y roadmap: [`docs/PROGRESS.md`](docs/PROGRESS.md)
-
-### **Documentación de Arquitectura**
-
-- [Plan de Siguiente Nivel](docs/README_NEXT_LEVEL.md)
-- [Seguimiento de Progreso](docs/PROGRESS.md)
-
-## 🐛 Solución de Problemas
-
-### **Problemas Comunes**
-
-**Errores de Indexación de GitHub:**
-```bash
-# Verificar token
-echo $GITHUB_TOKEN
-
-# Verificar conexión Milvus
-docker ps | grep milvus
-```
-
-**Notificaciones del Human Loop:**
-```bash
-# Verificar configuración de webhook
-cat config/human_loop.yml
-
-# Verificar variables de entorno
-env | grep SLACK
-```
-
-**Problemas del Context Manager:**
-```bash
-# Verificar logs
-tail -f logs/context_stats.jsonl
-
-# Verificar dashboard
-streamlit run app/dashboard_context.py
-```
-
-## 📄 Licencia
+## Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-## 🙏 Agradecimientos
+## Agradecimientos
 
 - **HumanLayer**: Inspiración para arquitectura human-in-the-loop
 - **Context Engineering**: Mejores prácticas para gestión de contexto
-- **Milvus**: Base de datos vectorial de alto rendimiento
-- **OpenAI**: Modelos de lenguaje avanzados para comprensión de contexto
+- **Milvus**: Base de datos vectorial usada en el spike
+- **Agentes de coding (Cursor y similares)**: ecosistema que terminó cubriendo gran parte del caso de uso
 
-## 📞 Soporte
+## Soporte
 
-- **Issues**: [GitHub Issues](https://github.com/polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA/discussions)
-- **Wiki**: [Project Wiki](https://github.com/polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA/wiki)
+Proyecto archivado: no hay soporte activo. Issues nuevos deberían cerrarse como fuera de alcance.
 
 ---
 
-**🚀 ¿Listo para llevar tu gestión de proyectos al Siguiente Nivel?**
-
-Este sistema combina el poder de la IA con supervisión humana, proporcionando automatización inteligente mientras mantiene control sobre decisiones críticas. Perfecto para equipos que quieren escalar sus capacidades sin sacrificar calidad o seguridad.
+**Proyecto archivado (agosto 2026).** El aprendizaje queda en [CIERRE.md](CIERRE.md).

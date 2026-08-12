@@ -1,9 +1,25 @@
-# Project Progress Report — Usability-First
-**Repo:** polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA  
-**UI:** Agno Agent UI (Next.js + Tailwind) — AG-UI protocol  
-**Updated:** 31 Aug 2025
+# Project Progress Report — ARCHIVED
 
-## 🎯 Objetivo de esta iteración
+**Repo:** polsebas/Herramienta_de_Diagnostico_Consulta_Con_IA  
+**Status:** **Archived (2026-08-12)** — no further roadmap work  
+**Closeout:** [ARCHIVE.md](../ARCHIVE.md) · [CIERRE.md](../CIERRE.md)  
+**Last development activity:** September 2025  
+**Previous progress snapshot below:** 31 Aug 2025 (historical)
+
+---
+
+## Final decision (Aug 2026)
+
+Development is stopped. Modern coding agents absorb most of the original value proposition.  
+Historical plans (PR-F…PR-K, usability phases U1–U5, Agno team refactor) are **cancelled / frozen**, not deferred.
+
+Reusable ideas (contracts, HITL audit, Cursor task templates) are listed in the closeout docs — extract elsewhere if needed; do not extend this repo.
+
+---
+
+# Historical snapshot (31 Aug 2025)
+
+## Objetivo de esta iteración (histórico)
 Convertir la herramienta en una experiencia “plug-in y usar” enfocada en:
 1) Seleccionar fuentes (código + docs),  
 2) Ejecutar un análisis profundo,  
@@ -21,46 +37,18 @@ Convertir la herramienta en una experiencia “plug-in y usar” enfocada en:
   * **PR-C**: Cursor Integration merged (Aug 30).
   * **PR-D**: Audit & Evaluation system merged (Aug 30).
 
-### 🔄 In Progress
+### In Progress at freeze (cancelled)
 
-* **Intelligence Phase**
+* **Intelligence Phase** — PR-F, PR-G — **cancelled on archive**
+* **Production Phase** — PR-H, PR-I, PR-J — **cancelled on archive**
+* **Usability roadmap U1–U5** — **cancelled on archive**
+* **Agno team refactor R5+** — **cancelled on archive**
 
-  * **PR-F**: Advanced contract generation module.
-    - 🎯 **Objetivo**: ML classifier + adaptive templates (95% accuracy)
-    - 📁 **Archivos**: `app/advanced_contracts/`, `config/advanced_contracts/`
-    - ⏱️ **Tiempo**: 2-3 semanas
-    - 📊 **Métricas**: Classification accuracy 95%, Template relevance 0.95
-  * **PR-G**: Automated project analysis with background agents.
-    - 🎯 **Objetivo**: Agentes proactivos 24/7 (85% problemas detectados antes de impacto)
-    - 📁 **Archivos**: `app/project_analysis/`, `background_agents/`
-    - ⏱️ **Tiempo**: 2-3 semanas
-    - 📊 **Métricas**: Problem detection 85%, Automation 80%, Velocity +25%
-
-### 📝 Planned
-
-* **Production Phase**
-
-  * **PR-H**: Enterprise infrastructure (multi-tenant, scaling).
-    - 🎯 **Objetivo**: 1000+ usuarios concurrentes, 100+ tenants, 99.99% uptime
-    - 📁 **Archivos**: `app/enterprise/`, `infrastructure/kubernetes/`
-    - ⏱️ **Tiempo**: 3-4 semanas
-    - 📊 **Métricas**: 1000+ concurrent users, 99.99% uptime, <200ms P95
-  * **PR-I**: Security & compliance layer (auth, RBAC).
-    - 🎯 **Objetivo**: Security score 98+, compliance 100% GDPR/SOX/ISO27001
-    - 📁 **Archivos**: `app/security/`, `app/security/compliance/`
-    - ⏱️ **Tiempo**: 2-3 semanas
-    - 📊 **Métricas**: Security score 98+, 0 security incidents, 100% compliance
-  * **PR-J**: Advanced human-in-the-loop workflows.
-    - 🎯 **Objetivo**: Workflows enterprise complejos, <15 min tiempo aprobación
-    - 📁 **Archivos**: `app/workflows/`, `app/workflows/templates/`
-    - ⏱️ **Tiempo**: 2 semanas
-    - 📊 **Métricas**: <15 min approval time, 95% workflow completion
-
-> Base funcional referenciada en el MANUAL_USUARIO (pantalla, interacción y resultados), que guiará la simplicidad de los flujos en UI.
+> El resto de este archivo se conserva solo como bitácora histórica. No es un plan vigente.
 
 ---
 
-## 🧭 Roadmap (Usability-first)
+## Roadmap histórico (Usability-first) — cancelado
 - **Phase U1 – Descubrimiento & Selección de fuentes** ✅ *(en curso)*
 - **Phase U2 – Análisis profundo + Métricas de repositorio**
 - **Phase U3 – Generación/Upgrade de documentación**
